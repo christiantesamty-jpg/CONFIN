@@ -1,4 +1,4 @@
-const CACHE = "confin-v2.3";
+const CACHE = "confin-v3.0";
 const ASSETS = [
   "./",
   "./index.html",

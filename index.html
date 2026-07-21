@@ -177,10 +177,33 @@
   </section>
 
   <section class="dialog hidden" id="settingsDialog" aria-modal="true">
-    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.3</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
+    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.4</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
     <div class="settings-stack">
       <label><span>Tu nombre</span><input id="userNameInput" type="text" maxlength="30" placeholder="Christian" /></label>
       <button class="secondary-button" id="saveNameButton">Guardar nombre</button>
+      <section class="palette-setting" aria-labelledby="paletteTitle">
+        <div class="setting-copy">
+          <strong id="paletteTitle">Apariencia</strong>
+          <span>Elige la paleta de colores de ConFin</span>
+        </div>
+        <div class="palette-grid" id="paletteGrid">
+          <button class="palette-option" type="button" data-theme="midnight" aria-label="Paleta Medianoche">
+            <span class="palette-preview preview-midnight"><i></i><i></i><i></i></span><b>Medianoche</b>
+          </button>
+          <button class="palette-option" type="button" data-theme="ocean" aria-label="Paleta Océano">
+            <span class="palette-preview preview-ocean"><i></i><i></i><i></i></span><b>Océano</b>
+          </button>
+          <button class="palette-option" type="button" data-theme="violet" aria-label="Paleta Violeta">
+            <span class="palette-preview preview-violet"><i></i><i></i><i></i></span><b>Violeta</b>
+          </button>
+          <button class="palette-option" type="button" data-theme="sand" aria-label="Paleta Arena">
+            <span class="palette-preview preview-sand"><i></i><i></i><i></i></span><b>Arena</b>
+          </button>
+          <button class="palette-option" type="button" data-theme="light" aria-label="Paleta Clara">
+            <span class="palette-preview preview-light"><i></i><i></i><i></i></span><b>Clara</b>
+          </button>
+        </div>
+      </section>
       <div class="notification-setting">
         <div><strong>Notificaciones</strong><span id="notificationStatus">Desactivadas</span></div>
         <button class="secondary-button compact-button" id="notificationButton" type="button">Activar</button>

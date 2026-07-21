@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "2.2";
+const APP_VERSION = "3.0";
 
 const defaultData = {
   userName: "Christian",
@@ -15,7 +15,8 @@ const defaultData = {
     { id: crypto.randomUUID(), category: "Transporte", limit: 2500 },
     { id: crypto.randomUUID(), category: "Entretenimiento", limit: 2000 }
   ],
-  goals: []
+  goals: [],
+  theme: "midnight"
 };
 
 const expenseCategories = ["Alimentación","Gasolina","Transporte","Vivienda","Servicios","Salud","Entretenimiento","Compras","Educación","Deudas","Ahorro","Otros gastos"];
@@ -31,6 +32,24 @@ let data = normalizeData(loadData());
 let currentType = "expense";
 let currentFilter = "all";
 
+function applyTheme(theme){
+  const selected=["midnight","ocean","violet","sand","light"].includes(theme)?theme:"midnight";
+  document.documentElement.dataset.theme=selected;
+  const themeColor={midnight:"#090b10",ocean:"#07131a",violet:"#100b18",sand:"#17130e",light:"#f4f6f8"}[selected];
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content",themeColor);
+  document.querySelectorAll(".palette-option").forEach(btn=>btn.classList.toggle("active",btn.dataset.theme===selected));
+}
+
+function syncAppHeight(){
+  const height=window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight;
+  document.documentElement.style.setProperty("--app-height",`${Math.ceil(height)}px`);
+}
+syncAppHeight();
+window.addEventListener("resize",syncAppHeight,{passive:true});
+window.addEventListener("orientationchange",()=>setTimeout(syncAppHeight,150));
+window.visualViewport?.addEventListener("resize",syncAppHeight,{passive:true});
+applyTheme(data.theme);
+
 function loadData(){
   try {
     return JSON.parse(localStorage.getItem(KEY)) || structuredClone(defaultData);
@@ -45,6 +64,7 @@ function normalizeData(source){
   normalized.transactions = Array.isArray(normalized.transactions) ? normalized.transactions : [];
   normalized.budgets = Array.isArray(normalized.budgets) ? normalized.budgets : [];
   normalized.goals = Array.isArray(normalized.goals) ? normalized.goals : [];
+  normalized.theme = ["midnight","ocean","violet","sand","light"].includes(normalized.theme) ? normalized.theme : "midnight";
   normalized.accounts = normalized.accounts.map(a=>({
     ...a,
     balance:Number(a.balance||0),
@@ -283,6 +303,7 @@ closeSettings.addEventListener("click",closeModals);
 modalBackdrop.addEventListener("click",closeModals);
 settingsButton.addEventListener("click",()=>{
   userNameInput.value=data.userName||"";
+  applyTheme(data.theme);
   openModal(settingsDialog);
 });
 
@@ -394,6 +415,13 @@ saveNameButton.addEventListener("click",()=>{
   data.userName=userNameInput.value.trim()||"Usuario";
   saveData();
 });
+document.querySelectorAll(".palette-option").forEach(button=>button.addEventListener("click",()=>{
+  data.theme=button.dataset.theme;
+  applyTheme(data.theme);
+  localStorage.setItem(KEY,JSON.stringify(data));
+  showToast("Paleta actualizada");
+}));
+
 function notificationsSupported(){
   return "Notification" in window && "serviceWorker" in navigator;
 }

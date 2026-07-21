@@ -1,14 +1,16 @@
-# ConFin v2.3
+# ConFin 3.0
 
-Aplicación personal de finanzas en formato PWA para iPhone.
+Actualizacion principal de interfaz para iPhone.
 
-## Cambios de esta versión
+## Incluye
 
-- Vista estable a pantalla completa en iPhone 15 Pro Max y otros iPhone.
-- La barra, el encabezado y el botón flotante conservan exactamente la misma posición en todas las secciones.
-- Cada pantalla tiene su propio desplazamiento interno, evitando cambios de tamaño.
-- Sección Cuentas renovada con resumen de dinero disponible y deuda total.
-- Soporte mejorado para tarjetas de crédito: límite, día de corte, día de pago, utilización y crédito disponible.
-- Migración automática de datos anteriores y caché actualizada.
+- Altura sincronizada con `visualViewport` para iPhone con Dynamic Island.
+- Barra inferior fija y contenido con desplazamiento independiente.
+- Respeto por las areas seguras superior e inferior de iOS.
+- Formulario de movimientos corregido para pantallas moviles.
+- Paletas configurables: Medianoche, Oceano, Violeta, Arena y Clara.
+- Conserva los datos existentes guardados bajo `confin-data-v1`.
 
-Los datos continúan guardándose localmente en el dispositivo.
+## Publicacion
+
+Sube todos los archivos y la carpeta `icons` a la raiz del repositorio de GitHub Pages y reemplaza los anteriores.
