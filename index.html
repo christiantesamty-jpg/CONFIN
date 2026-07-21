@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#090b10" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -118,6 +118,10 @@
           <p class="section-kicker">Tu dinero</p>
           <button class="text-button" id="addAccountButton">+ Nueva</button>
         </div>
+        <div class="account-summary-grid">
+          <article class="account-summary-card"><span>Dinero disponible</span><strong id="accountsAvailable">$0.00</strong></article>
+          <article class="account-summary-card"><span>Deuda en tarjetas</span><strong id="creditDebtTotal">$0.00</strong></article>
+        </div>
         <div id="accountsList" class="account-grid"></div>
       </section>
     </main>
@@ -173,7 +177,7 @@
   </section>
 
   <section class="dialog hidden" id="settingsDialog" aria-modal="true">
-    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.1</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
+    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.2</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
     <div class="settings-stack">
       <label><span>Tu nombre</span><input id="userNameInput" type="text" maxlength="30" placeholder="Christian" /></label>
       <button class="secondary-button" id="saveNameButton">Guardar nombre</button>

@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "2.1";
+const APP_VERSION = "2.2";
 
 const defaultData = {
   userName: "Christian",
@@ -27,7 +27,7 @@ const icons = {
   "Reembolsos":"↩️","Regalos":"🎉","Otros ingresos":"＋"
 };
 
-let data = loadData();
+let data = normalizeData(loadData());
 let currentType = "expense";
 let currentFilter = "all";
 
@@ -38,6 +38,23 @@ function loadData(){
     return structuredClone(defaultData);
   }
 }
+
+function normalizeData(source){
+  const normalized = source && typeof source === "object" ? source : structuredClone(defaultData);
+  normalized.accounts = Array.isArray(normalized.accounts) ? normalized.accounts : [];
+  normalized.transactions = Array.isArray(normalized.transactions) ? normalized.transactions : [];
+  normalized.budgets = Array.isArray(normalized.budgets) ? normalized.budgets : [];
+  normalized.goals = Array.isArray(normalized.goals) ? normalized.goals : [];
+  normalized.accounts = normalized.accounts.map(a=>({
+    ...a,
+    balance:Number(a.balance||0),
+    creditLimit:Number(a.creditLimit||0),
+    cutDay:Number(a.cutDay||0),
+    dueDay:Number(a.dueDay||0)
+  }));
+  return normalized;
+}
+
 function saveData(){
   localStorage.setItem(KEY, JSON.stringify(data));
   renderAll();
@@ -140,14 +157,43 @@ function renderTransactions(){
 
 function renderAccounts(){
   const list=document.getElementById("accountsList");
-  list.innerHTML=data.accounts.map(a=>`
-    <article class="list-card account-row">
+  const available=data.accounts.filter(a=>a.type!=="credit").reduce((sum,a)=>sum+accountBalance(a.id),0);
+  const creditDebt=data.accounts.filter(a=>a.type==="credit").reduce((sum,a)=>sum+Math.max(0,-accountBalance(a.id)),0);
+  const availableEl=document.getElementById("accountsAvailable");
+  const debtEl=document.getElementById("creditDebtTotal");
+  if(availableEl) availableEl.textContent=money(available);
+  if(debtEl) debtEl.textContent=money(creditDebt);
+
+  list.innerHTML=data.accounts.map(a=>{
+    const balance=accountBalance(a.id);
+    if(a.type==="credit"){
+      const debt=Math.max(0,-balance);
+      const limit=Number(a.creditLimit||0);
+      const utilization=limit?Math.min(100,debt/limit*100):0;
+      const availableCredit=Math.max(0,limit-debt);
+      return `<article class="list-card credit-card-item">
+        <div class="credit-top">
+          <div><p class="tx-title">💳 ${escapeHtml(a.name)}</p><span class="tx-sub">Tarjeta de crédito</span></div>
+          <span class="credit-badge">CRÉDITO</span>
+        </div>
+        <strong class="credit-debt">${money(debt)}</strong>
+        <div class="credit-meta">Saldo utilizado · ${Math.round(utilization)}% del límite</div>
+        <div class="progress credit-progress"><span style="width:${utilization}%"></span></div>
+        <div class="credit-bottom">
+          <div>Disponible<b>${money(availableCredit)}</b></div>
+          <div>Corte<b>${a.cutDay?`Día ${a.cutDay}`:"Sin fecha"}</b></div>
+          <div>Pago límite<b>${a.dueDay?`Día ${a.dueDay}`:"Sin fecha"}</b></div>
+        </div>
+      </article>`;
+    }
+    return `<article class="list-card account-row">
       <div class="tx-left">
-        <div class="tx-icon">${a.type==="cash"?"💵":a.type==="savings"?"🐷":a.type==="credit"?"💳":"🏦"}</div>
+        <div class="tx-icon">${a.type==="cash"?"💵":a.type==="savings"?"🐷":a.type==="investment"?"📈":"🏦"}</div>
         <div><p class="tx-title">${escapeHtml(a.name)}</p><span class="tx-sub">${accountTypeName(a.type)}</span></div>
       </div>
-      <strong>${money(accountBalance(a.id))}</strong>
-    </article>`).join("") || `<div class="list-card empty-state">Agrega tu primera cuenta.</div>`;
+      <strong>${money(balance)}</strong>
+    </article>`;
+  }).join("") || `<div class="list-card empty-state">Agrega tu primera cuenta.</div>`;
 }
 
 function accountTypeName(type){
@@ -215,7 +261,7 @@ function navigateTo(target){
   btn.classList.add("active");
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.dataset.view===btn.dataset.target));
   pageTitle.textContent = btn.dataset.target==="inicio" ? "ConFin" : btn.querySelector("small").textContent;
-  window.scrollTo({top:0,behavior:"instant"});
+  document.getElementById("appMain").scrollTo({top:0,behavior:"instant"});
 }
 document.querySelectorAll(".nav-item").forEach(btn=>btn.addEventListener("click",()=>navigateTo(btn.dataset.target)));
 document.getElementById("seeAllTransactions").addEventListener("click",()=>navigateTo("movimientos"));
@@ -303,11 +349,35 @@ function openSimpleDialog(title, fields, onSubmit){
   simpleForm.onsubmit=e=>{e.preventDefault();onSubmit(new FormData(simpleForm));closeModals();saveData();};
   openModal(simpleDialog);
 }
-addAccountButton.addEventListener("click",()=>openSimpleDialog("Nueva cuenta",`
-  <label><span>Nombre</span><input name="name" required placeholder="Ej. BBVA"></label>
-  <label><span>Tipo</span><select name="type"><option value="cash">Efectivo</option><option value="bank">Banco</option><option value="savings">Ahorro</option><option value="credit">Tarjeta de crédito</option><option value="investment">Inversión</option></select></label>
-  <label><span>Saldo inicial</span><input name="balance" type="number" step="0.01" value="0"></label>`,
-  fd=>data.accounts.push({id:crypto.randomUUID(),name:fd.get("name"),type:fd.get("type"),balance:Number(fd.get("balance")||0)})));
+addAccountButton.addEventListener("click",()=>{
+  openSimpleDialog("Nueva cuenta",`
+    <label><span>Nombre</span><input name="name" required placeholder="Ej. BBVA, Nu o Efectivo"></label>
+    <label><span>Tipo</span><select name="type" id="newAccountType"><option value="cash">Efectivo</option><option value="bank">Cuenta bancaria</option><option value="savings">Ahorro</option><option value="credit">Tarjeta de crédito</option><option value="investment">Inversión</option></select></label>
+    <label><span id="initialBalanceLabel">Saldo inicial</span><input name="balance" type="number" step="0.01" value="0"></label>
+    <div class="credit-fields hidden" id="creditAccountFields">
+      <p class="field-help">Estos datos permiten calcular el crédito disponible y mostrar tus fechas importantes.</p>
+      <label><span>Límite de crédito</span><input name="creditLimit" type="number" min="0" step="0.01" placeholder="0.00"></label>
+      <div class="field-row">
+        <label><span>Día de corte</span><input name="cutDay" type="number" min="1" max="31" placeholder="15"></label>
+        <label><span>Día límite de pago</span><input name="dueDay" type="number" min="1" max="31" placeholder="5"></label>
+      </div>
+    </div>`,
+    fd=>data.accounts.push({
+      id:crypto.randomUUID(),name:fd.get("name"),type:fd.get("type"),balance:Number(fd.get("balance")||0),
+      creditLimit:Number(fd.get("creditLimit")||0),cutDay:Number(fd.get("cutDay")||0),dueDay:Number(fd.get("dueDay")||0)
+    })
+  );
+  const typeSelect=document.getElementById("newAccountType");
+  const creditFields=document.getElementById("creditAccountFields");
+  const balanceLabel=document.getElementById("initialBalanceLabel");
+  const syncAccountFields=()=>{
+    const isCredit=typeSelect.value==="credit";
+    creditFields.classList.toggle("hidden",!isCredit);
+    balanceLabel.textContent=isCredit?"Saldo inicial (usa negativo si ya debes)":"Saldo inicial";
+  };
+  typeSelect.addEventListener("change",syncAccountFields);
+  syncAccountFields();
+});
 
 addBudgetButton.addEventListener("click",()=>openSimpleDialog("Nuevo presupuesto",`
   <label><span>Categoría</span><select name="category">${expenseCategories.map(c=>`<option>${c}</option>`).join("")}</select></label>
@@ -370,7 +440,7 @@ importInput.addEventListener("change",async e=>{
   try{
     const imported=JSON.parse(await file.text());
     if(!imported.accounts||!imported.transactions) throw new Error();
-    data=imported; saveData(); alert("Respaldo importado correctamente.");
+    data=normalizeData(imported); saveData(); alert("Respaldo importado correctamente.");
   }catch{alert("El archivo no es un respaldo válido de ConFin.");}
   e.target.value="";
 });

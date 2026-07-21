@@ -1,22 +1,14 @@
-# ConFin v2.1
+# ConFin v2.2
 
-Aplicación personal de finanzas en formato PWA.
+Aplicación personal de finanzas en formato PWA para iPhone.
 
-## Novedades
-- Rediseño visual completo estilo iPhone.
-- Dashboard con patrimonio, ingresos, gastos y últimos movimientos.
-- Registro rápido con categorías visuales separadas para ingresos y gastos.
-- Nueva navegación inferior y botón central.
-- Tarjetas de cuentas renovadas.
-- Mensaje de confirmación al guardar.
-- Caché actualizado para instalación como app web.
+## Cambios de esta versión
 
-Los datos continúan guardándose localmente y son compatibles con la versión anterior.
+- Vista estable a pantalla completa en iPhone 15 Pro Max y otros iPhone.
+- La barra, el encabezado y el botón flotante conservan exactamente la misma posición en todas las secciones.
+- Cada pantalla tiene su propio desplazamiento interno, evitando cambios de tamaño.
+- Sección Cuentas renovada con resumen de dinero disponible y deuda total.
+- Soporte mejorado para tarjetas de crédito: límite, día de corte, día de pago, utilización y crédito disponible.
+- Migración automática de datos anteriores y caché actualizada.
 
-
-## Cambios v2.1
-- Barra inferior fija y estable.
-- Encabezados sin títulos repetidos.
-- Iconos SVG elegantes y consistentes.
-- Notificaciones opcionales en iPhone instalado como app web.
-- Aviso al alcanzar 80% o 100% de un presupuesto mientras ConFin está en uso.
+Los datos continúan guardándose localmente en el dispositivo.

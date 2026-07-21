@@ -44,3 +44,109 @@ button,input,select{font:inherit}button{color:inherit}h1,h2,h3,p{margin-top:0}bu
 .fab{position:fixed;z-index:25;left:auto;right:max(24px,calc((100vw - 520px)/2 + 24px));bottom:calc(94px + env(safe-area-inset-bottom));transform:none;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(145deg,#7ff7a2,#2fd56a);color:#071009;font-size:2rem;font-weight:500;box-shadow:0 16px 36px rgba(53,216,110,.34)}.fab:active{transform:scale(.94)}
 .notification-setting{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px;border:1px solid var(--border);background:#121721;border-radius:16px}.notification-setting div{display:grid;gap:3px}.notification-setting strong{font-size:.86rem}.notification-setting span{font-size:.7rem;color:var(--muted)}.compact-button{padding:9px 13px;font-size:.75rem}
 @media(max-width:370px){.bottom-nav{padding-left:10px;padding-right:10px}.nav-item small{font-size:.52rem}.fab{right:18px}}
+
+/* ConFin v2.2 — viewport estable en iPhone y fase de cuentas/tarjetas */
+html{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  background:var(--bg);
+}
+body{
+  width:100%;
+  height:100%;
+  min-height:100%;
+  overflow:hidden;
+  overscroll-behavior:none;
+  background:var(--bg);
+}
+.app-shell{
+  width:100%;
+  max-width:520px;
+  height:100dvh;
+  min-height:100dvh;
+  margin:0 auto;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+  isolation:isolate;
+}
+.topbar{
+  flex:0 0 auto;
+  margin:0;
+  padding:calc(env(safe-area-inset-top) + 18px) 20px 18px;
+  background:linear-gradient(180deg,rgba(9,11,16,.99),rgba(9,11,16,.94) 78%,rgba(9,11,16,0));
+  position:relative;
+  z-index:8;
+}
+#appMain{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:0 20px calc(116px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  overscroll-behavior-y:contain;
+}
+#appMain::-webkit-scrollbar{display:none}
+.view{
+  width:100%;
+  min-height:100%;
+}
+.view.active{display:block}
+.bottom-nav{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  transform:none;
+  width:100%;
+  max-width:none;
+  height:calc(82px + env(safe-area-inset-bottom));
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+}
+.fab{
+  position:absolute;
+  left:auto;
+  right:24px;
+  bottom:calc(72px + env(safe-area-inset-bottom));
+  transform:none;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  border:0;
+}
+.fab:active{transform:scale(.94)}
+.page-action-row{min-height:40px}
+
+.account-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.account-summary-card{background:linear-gradient(145deg,rgba(28,33,45,.96),rgba(18,22,30,.96));border:1px solid var(--border);border-radius:20px;padding:16px}
+.account-summary-card span{display:block;color:var(--muted);font-size:.72rem;margin-bottom:7px}
+.account-summary-card strong{font-size:1.05rem;letter-spacing:-.035em}
+.credit-card-item{display:block!important;min-height:178px!important;padding:20px!important;position:relative;overflow:hidden}
+.credit-card-item::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-78px;top:-94px;background:rgba(166,132,255,.12);filter:blur(2px)}
+.credit-top,.credit-bottom{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:relative;z-index:1}
+.credit-badge{padding:6px 9px;border-radius:99px;background:rgba(166,132,255,.14);color:#d7caff;font-size:.65rem;font-weight:750;border:1px solid rgba(166,132,255,.2)}
+.credit-debt{font-size:1.45rem!important;display:block;margin:14px 0 4px;position:relative;z-index:1}
+.credit-meta{position:relative;z-index:1;color:var(--muted);font-size:.7rem;margin-bottom:13px}
+.credit-bottom{color:#c6cbd4;font-size:.7rem;margin-top:12px}
+.credit-bottom b{display:block;color:var(--text);font-size:.78rem;margin-top:3px}
+.credit-progress{position:relative;z-index:1}
+.credit-progress span{background:linear-gradient(90deg,var(--purple),var(--blue))}
+.field-help{font-size:.68rem;color:var(--muted);line-height:1.35;margin:-4px 0 2px}
+.credit-fields.hidden{display:none}
+
+@media (max-width:390px){
+  .topbar{padding-left:16px;padding-right:16px}
+  #appMain{padding-left:16px;padding-right:16px}
+  .bottom-nav{padding-left:8px;padding-right:8px}
+  .nav-item small{font-size:.51rem}
+  .fab{right:18px}
+}
+@supports not (height:100dvh){.app-shell{height:100vh;min-height:100vh}}
