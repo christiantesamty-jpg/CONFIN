@@ -1,25 +1,16 @@
 {
   "name": "ConFin",
   "short_name": "ConFin",
-  "description": "Finanzas personales privadas y sin suscripciones.",
-  "start_url": "./",
+  "description": "Tus finanzas personales, privadas y claras.",
+  "start_url": "./?v=2.0",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#070a08",
-  "theme_color": "#070a08",
+  "display_override": ["standalone", "fullscreen"],
+  "background_color": "#090b10",
+  "theme_color": "#090b10",
   "orientation": "portrait-primary",
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
 }
