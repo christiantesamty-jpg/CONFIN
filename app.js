@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "3.0";
+const APP_VERSION = "3.1";
 
 const defaultData = {
   userName: "Christian",
@@ -40,14 +40,8 @@ function applyTheme(theme){
   document.querySelectorAll(".palette-option").forEach(btn=>btn.classList.toggle("active",btn.dataset.theme===selected));
 }
 
-function syncAppHeight(){
-  const height=window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight;
-  document.documentElement.style.setProperty("--app-height",`${Math.ceil(height)}px`);
-}
-syncAppHeight();
-window.addEventListener("resize",syncAppHeight,{passive:true});
-window.addEventListener("orientationchange",()=>setTimeout(syncAppHeight,150));
-window.visualViewport?.addEventListener("resize",syncAppHeight,{passive:true});
+// iOS PWA: let CSS own the viewport height. visualViewport can report a shortened
+// value in standalone mode and create a false empty strip at the bottom.
 applyTheme(data.theme);
 
 function loadData(){
