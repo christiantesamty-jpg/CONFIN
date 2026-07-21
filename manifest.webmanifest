@@ -2,7 +2,7 @@
   "name": "ConFin",
   "short_name": "ConFin",
   "description": "Tus finanzas personales, privadas y claras.",
-  "start_url": "./?v=2.0",
+  "start_url": "./?v=2.1",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen"],

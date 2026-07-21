@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "2.0";
+const APP_VERSION = "2.1";
 
 const defaultData = {
   userName: "Christian",
@@ -205,7 +205,7 @@ function renderCategoryOptions(){
   }));
 }
 function renderAll(){
-  renderDashboard(); renderTransactions(); renderAccounts(); renderBudgets(); renderGoals(); renderSelects();
+  renderDashboard(); renderTransactions(); renderAccounts(); renderBudgets(); renderGoals(); renderSelects(); updateNotificationUI();
 }
 
 function navigateTo(target){
@@ -215,6 +215,7 @@ function navigateTo(target){
   btn.classList.add("active");
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.dataset.view===btn.dataset.target));
   pageTitle.textContent = btn.dataset.target==="inicio" ? "ConFin" : btn.querySelector("small").textContent;
+  window.scrollTo({top:0,behavior:"instant"});
 }
 document.querySelectorAll(".nav-item").forEach(btn=>btn.addEventListener("click",()=>navigateTo(btn.dataset.target)));
 document.getElementById("seeAllTransactions").addEventListener("click",()=>navigateTo("movimientos"));
@@ -256,11 +257,12 @@ transactionForm.addEventListener("submit",e=>{
     alert("La cuenta origen y destino deben ser diferentes.");
     return;
   }
+  const savedCategory=currentType==="transfer"?"Transferencia":txCategory.value;
   data.transactions.push({
     id:crypto.randomUUID(),
     type:currentType,
     amount,
-    category:currentType==="transfer"?"Transferencia":txCategory.value,
+    category:savedCategory,
     accountId:txAccount.value,
     destinationId:currentType==="transfer"?txDestination.value:null,
     date:txDate.value,
@@ -270,7 +272,16 @@ transactionForm.addEventListener("submit",e=>{
   txDate.valueAsDate=new Date();
   closeModals();
   saveData();
-  showToast(currentType==="income"?"Ingreso guardado":currentType==="expense"?"Gasto guardado":"Transferencia guardada");
+  const savedType=currentType;
+  showToast(savedType==="income"?"Ingreso guardado":savedType==="expense"?"Gasto guardado":"Transferencia guardada");
+  if(savedType==="expense"){
+    const budget=data.budgets.find(b=>b.category===savedCategory);
+    if(budget){
+      const spent=spentForCategory(budget.category);
+      const pct=budget.limit?Math.round(spent/budget.limit*100):0;
+      if(pct>=80) showAppNotification("Presupuesto de "+budget.category,pct>=100?"Ya alcanzaste o superaste tu presupuesto mensual.":"Ya utilizaste "+pct+"% de tu presupuesto mensual.");
+    }
+  }
 });
 txDate.valueAsDate=new Date();
 
@@ -313,6 +324,40 @@ saveNameButton.addEventListener("click",()=>{
   data.userName=userNameInput.value.trim()||"Usuario";
   saveData();
 });
+function notificationsSupported(){
+  return "Notification" in window && "serviceWorker" in navigator;
+}
+function updateNotificationUI(){
+  const status=document.getElementById("notificationStatus");
+  const button=document.getElementById("notificationButton");
+  if(!status||!button) return;
+  if(!notificationsSupported()){
+    status.textContent="No disponibles en este dispositivo";
+    button.textContent="No disponible";
+    button.disabled=true;
+    return;
+  }
+  const enabled=data.notificationsEnabled===true && Notification.permission==="granted";
+  status.textContent=enabled?"Activadas en este iPhone":Notification.permission==="denied"?"Bloqueadas en Ajustes":"Desactivadas";
+  button.textContent=enabled?"Probar":"Activar";
+}
+async function showAppNotification(title,body){
+  if(!notificationsSupported()||Notification.permission!=="granted"||data.notificationsEnabled!==true) return;
+  const registration=await navigator.serviceWorker.ready;
+  await registration.showNotification(title,{body,icon:"./icons/icon-192.png",badge:"./icons/icon-192.png",tag:"confin-update"});
+}
+document.getElementById("notificationButton").addEventListener("click",async()=>{
+  if(!notificationsSupported()) return;
+  if(Notification.permission!=="granted"){
+    const permission=await Notification.requestPermission();
+    if(permission!=="granted"){ updateNotificationUI(); showToast("No se concedió permiso"); return; }
+  }
+  data.notificationsEnabled=true;
+  localStorage.setItem(KEY,JSON.stringify(data));
+  updateNotificationUI();
+  await showAppNotification("ConFin","Las notificaciones quedaron activadas correctamente.");
+});
+
 exportButton.addEventListener("click",()=>{
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);

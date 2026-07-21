@@ -1,4 +1,4 @@
-# ConFin v2.0
+# ConFin v2.1
 
 Aplicación personal de finanzas en formato PWA.
 
@@ -12,3 +12,11 @@ Aplicación personal de finanzas en formato PWA.
 - Caché actualizado para instalación como app web.
 
 Los datos continúan guardándose localmente y son compatibles con la versión anterior.
+
+
+## Cambios v2.1
+- Barra inferior fija y estable.
+- Encabezados sin títulos repetidos.
+- Iconos SVG elegantes y consistentes.
+- Notificaciones opcionales en iPhone instalado como app web.
+- Aviso al alcanzar 80% o 100% de un presupuesto mientras ConFin está en uso.

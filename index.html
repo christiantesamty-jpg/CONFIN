@@ -80,8 +80,8 @@
       </section>
 
       <section class="view" data-view="movimientos">
-        <div class="section-heading">
-          <div><p class="section-kicker">Historial</p><h2>Movimientos</h2></div>
+        <div class="page-action-row">
+          <p class="section-kicker">Historial completo</p>
           <button class="text-button" id="clearFilters">Limpiar</button>
         </div>
         <div class="filter-row">
@@ -94,8 +94,8 @@
       </section>
 
       <section class="view" data-view="presupuestos">
-        <div class="section-heading">
-          <div><p class="section-kicker">Control mensual</p><h2>Presupuestos</h2></div>
+        <div class="page-action-row">
+          <p class="section-kicker">Control mensual</p>
           <button class="text-button" id="addBudgetButton">+ Nuevo</button>
         </div>
         <article class="panel summary-panel">
@@ -106,16 +106,16 @@
       </section>
 
       <section class="view" data-view="metas">
-        <div class="section-heading">
-          <div><p class="section-kicker">Tu futuro</p><h2>Metas</h2></div>
+        <div class="page-action-row">
+          <p class="section-kicker">Tu futuro</p>
           <button class="text-button" id="addGoalButton">+ Nueva</button>
         </div>
         <div id="goalsList" class="list-stack"></div>
       </section>
 
       <section class="view" data-view="cuentas">
-        <div class="section-heading">
-          <div><p class="section-kicker">Tu dinero</p><h2>Cuentas</h2></div>
+        <div class="page-action-row">
+          <p class="section-kicker">Tu dinero</p>
           <button class="text-button" id="addAccountButton">+ Nueva</button>
         </div>
         <div id="accountsList" class="account-grid"></div>
@@ -125,12 +125,11 @@
     <button class="fab" id="fab" aria-label="Nuevo movimiento"><span>+</span></button>
 
     <nav class="bottom-nav" aria-label="Navegación principal">
-      <button class="nav-item active" data-target="inicio"><span>⌂</span><small>Inicio</small></button>
-      <button class="nav-item" data-target="movimientos"><span>⇄</span><small>Movimientos</small></button>
-      <button class="nav-item" data-target="presupuestos"><span>◔</span><small>Presupuesto</small></button>
-      <div class="nav-spacer" aria-hidden="true"></div>
-      <button class="nav-item" data-target="metas"><span>◎</span><small>Metas</small></button>
-      <button class="nav-item" data-target="cuentas"><span>▣</span><small>Cuentas</small></button>
+      <button class="nav-item active" data-target="inicio" aria-label="Inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8v9.1a1.1 1.1 0 0 1-1.1 1.1h-5.2v-6.2H9.3V21H4.1A1.1 1.1 0 0 1 3 19.9z"/></svg><small>Inicio</small></button>
+      <button class="nav-item" data-target="movimientos" aria-label="Movimientos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h13m0 0-3-3m3 3-3 3M17 17H4m0 0 3 3m-3-3 3-3"/></svg><small>Movimientos</small></button>
+      <button class="nav-item" data-target="presupuestos" aria-label="Presupuestos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.6A8.5 8.5 0 0 1 20.4 9H15z"/></svg><small>Presupuestos</small></button>
+      <button class="nav-item" data-target="metas" aria-label="Metas"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="m12 12 6-6"/></svg><small>Metas</small></button>
+      <button class="nav-item" data-target="cuentas" aria-label="Cuentas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 9h18m-5 5h2"/></svg><small>Cuentas</small></button>
     </nav>
   </div>
 
@@ -174,10 +173,14 @@
   </section>
 
   <section class="dialog hidden" id="settingsDialog" aria-modal="true">
-    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.0</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
+    <div class="dialog-header"><div><p class="section-kicker">ConFin v2.1</p><h3>Ajustes</h3></div><button class="icon-button" id="closeSettings">×</button></div>
     <div class="settings-stack">
       <label><span>Tu nombre</span><input id="userNameInput" type="text" maxlength="30" placeholder="Christian" /></label>
       <button class="secondary-button" id="saveNameButton">Guardar nombre</button>
+      <div class="notification-setting">
+        <div><strong>Notificaciones</strong><span id="notificationStatus">Desactivadas</span></div>
+        <button class="secondary-button compact-button" id="notificationButton" type="button">Activar</button>
+      </div>
       <button class="secondary-button" id="exportButton">Exportar respaldo</button>
       <label class="file-button">Importar respaldo<input id="importInput" type="file" accept="application/json" hidden /></label>
       <button class="danger-button" id="resetButton">Borrar todos los datos</button>
