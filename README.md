@@ -1,4 +1,4 @@
-# ConFin v2.2
+# ConFin v2.3
 
 Aplicación personal de finanzas en formato PWA para iPhone.
 
