@@ -17,10 +17,13 @@ const defaultData = {
   goals: []
 };
 
-const categories = ["Alimentación","Transporte","Vivienda","Servicios","Salud","Entretenimiento","Compras","Educación","Ahorro","Otros"];
+const expenseCategories = ["Alimentación","Gasolina","Transporte","Vivienda","Servicios","Salud","Entretenimiento","Compras","Educación","Deudas","Ahorro","Otros gastos"];
+const incomeCategories = ["Nómina","Comisiones","Ventas","Honorarios","Bonos","Rendimientos","Reembolsos","Regalos","Otros ingresos"];
 const icons = {
-  "Alimentación":"🍽️","Transporte":"🚗","Vivienda":"🏠","Servicios":"💡","Salud":"❤️",
-  "Entretenimiento":"🎬","Compras":"🛍️","Educación":"📚","Ahorro":"🐷","Otros":"•"
+  "Alimentación":"🍽️","Gasolina":"⛽","Transporte":"🚗","Vivienda":"🏠","Servicios":"💡","Salud":"❤️",
+  "Entretenimiento":"🎬","Compras":"🛍️","Educación":"📚","Deudas":"🧾","Ahorro":"🐷","Otros gastos":"•",
+  "Nómina":"💼","Comisiones":"🤝","Ventas":"🏷️","Honorarios":"🧑‍💻","Bonos":"🎁","Rendimientos":"📈",
+  "Reembolsos":"↩️","Regalos":"🎉","Otros ingresos":"＋"
 };
 
 let data = loadData();
@@ -182,7 +185,11 @@ function renderSelects(){
   const accountOptions=data.accounts.map(a=>`<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
   txAccount.innerHTML=accountOptions;
   txDestination.innerHTML=accountOptions;
-  txCategory.innerHTML=categories.map(c=>`<option>${c}</option>`).join("");
+  renderCategoryOptions();
+}
+function renderCategoryOptions(){
+  const list = currentType === "income" ? incomeCategories : expenseCategories;
+  txCategory.innerHTML=list.map(c=>`<option>${c}</option>`).join("");
 }
 function renderAll(){
   renderDashboard(); renderTransactions(); renderAccounts(); renderBudgets(); renderGoals(); renderSelects();
@@ -219,6 +226,7 @@ document.querySelectorAll(".segment").forEach(btn=>btn.addEventListener("click",
   document.querySelectorAll(".segment").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
   currentType=btn.dataset.type;
+  renderCategoryOptions();
   categoryField.classList.toggle("hidden",currentType==="transfer");
   destinationField.classList.toggle("hidden",currentType!=="transfer");
 }));
@@ -273,7 +281,7 @@ addAccountButton.addEventListener("click",()=>openSimpleDialog("Nueva cuenta",`
   fd=>data.accounts.push({id:crypto.randomUUID(),name:fd.get("name"),type:fd.get("type"),balance:Number(fd.get("balance")||0)})));
 
 addBudgetButton.addEventListener("click",()=>openSimpleDialog("Nuevo presupuesto",`
-  <label><span>Categoría</span><select name="category">${categories.map(c=>`<option>${c}</option>`).join("")}</select></label>
+  <label><span>Categoría</span><select name="category">${expenseCategories.map(c=>`<option>${c}</option>`).join("")}</select></label>
   <label><span>Límite mensual</span><input name="limit" type="number" min="1" step="0.01" required></label>`,
   fd=>data.budgets.push({id:crypto.randomUUID(),category:fd.get("category"),limit:Number(fd.get("limit"))})));
 
