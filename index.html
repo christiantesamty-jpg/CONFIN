@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a08" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ConFin" />
+  <meta name="description" content="ConFin: finanzas personales privadas y sin suscripciones." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>ConFin</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="greeting">Hola</p>
+        <h1 id="pageTitle">ConFin</h1>
+      </div>
+      <button class="icon-button" id="settingsButton" aria-label="Ajustes">⚙︎</button>
+    </header>
+
+    <main id="appMain">
+      <section class="view active" data-view="inicio">
+        <article class="hero-card">
+          <div>
+            <p class="muted">Disponible</p>
+            <h2 class="hero-amount" id="availableAmount">$0.00</h2>
+            <p class="muted small">En cuentas de efectivo, banco y ahorro</p>
+          </div>
+          <div class="hero-icon">◉</div>
+        </article>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span class="metric-label">Ingresos</span>
+            <strong id="incomeMonth">$0.00</strong>
+            <span class="metric-foot positive">Este mes</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Gastos</span>
+            <strong id="expenseMonth">$0.00</strong>
+            <span class="metric-foot negative">Este mes</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Ahorro</span>
+            <strong id="savingsMonth">$0.00</strong>
+            <span class="metric-foot">Ingresos − gastos</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">Presupuesto restante</span>
+            <strong id="budgetRemaining">$0.00</strong>
+            <span class="metric-foot">Este mes</span>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-header">
+            <h3>Gasto por categoría</h3>
+            <span class="muted small">Este mes</span>
+          </div>
+          <div id="categoryChart" class="category-chart empty-state">
+            Registra tu primer gasto para ver el resumen.
+          </div>
+        </article>
+
+        <article class="tip-card">
+          <div>
+            <span class="tip-kicker">Consejo del día</span>
+            <p id="dailyTip">Registra tus movimientos al momento para mantener tus saldos al día.</p>
+          </div>
+          <span>›</span>
+        </article>
+      </section>
+
+      <section class="view" data-view="movimientos">
+        <div class="section-heading">
+          <h2>Movimientos</h2>
+          <button class="text-button" id="clearFilters">Limpiar</button>
+        </div>
+        <div class="filter-row">
+          <button class="chip active" data-filter="all">Todos</button>
+          <button class="chip" data-filter="expense">Gastos</button>
+          <button class="chip" data-filter="income">Ingresos</button>
+          <button class="chip" data-filter="transfer">Transferencias</button>
+        </div>
+        <div id="transactionsList" class="list-stack"></div>
+      </section>
+
+      <section class="view" data-view="presupuestos">
+        <div class="section-heading">
+          <h2>Presupuestos</h2>
+          <button class="text-button" id="addBudgetButton">+ Nuevo</button>
+        </div>
+        <article class="panel summary-panel">
+          <div>
+            <span class="muted">Presupuesto total</span>
+            <strong id="budgetTotal">$0.00</strong>
+          </div>
+          <div class="align-right">
+            <span class="muted">Restante</span>
+            <strong class="positive" id="budgetRemaining2">$0.00</strong>
+          </div>
+        </article>
+        <div id="budgetsList" class="list-stack"></div>
+      </section>
+
+      <section class="view" data-view="metas">
+        <div class="section-heading">
+          <h2>Metas</h2>
+          <button class="text-button" id="addGoalButton">+ Nueva</button>
+        </div>
+        <div id="goalsList" class="list-stack"></div>
+      </section>
+
+      <section class="view" data-view="cuentas">
+        <div class="section-heading">
+          <h2>Cuentas</h2>
+          <button class="text-button" id="addAccountButton">+ Nueva</button>
+        </div>
+        <div id="accountsList" class="list-stack"></div>
+      </section>
+    </main>
+
+    <button class="fab" id="fab" aria-label="Nuevo movimiento">+</button>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="nav-item active" data-target="inicio"><span>⌂</span><small>Inicio</small></button>
+      <button class="nav-item" data-target="movimientos"><span>⇆</span><small>Movimientos</small></button>
+      <button class="nav-item" data-target="presupuestos"><span>◌</span><small>Presupuestos</small></button>
+      <button class="nav-item" data-target="metas"><span>◎</span><small>Metas</small></button>
+      <button class="nav-item" data-target="cuentas"><span>▣</span><small>Cuentas</small></button>
+    </nav>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+
+  <section class="bottom-sheet hidden" id="quickSheet" aria-modal="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <h3>Nuevo movimiento</h3>
+      <button class="icon-button close-sheet">×</button>
+    </div>
+    <div class="segmented">
+      <button class="segment active" data-type="expense">Gasto</button>
+      <button class="segment" data-type="income">Ingreso</button>
+      <button class="segment" data-type="transfer">Transferencia</button>
+    </div>
+
+    <form id="transactionForm" class="form-stack">
+      <label>
+        <span>Monto</span>
+        <input id="txAmount" inputmode="decimal" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+      </label>
+      <label id="categoryField">
+        <span>Categoría</span>
+        <select id="txCategory"></select>
+      </label>
+      <label>
+        <span>Cuenta</span>
+        <select id="txAccount" required></select>
+      </label>
+      <label id="destinationField" class="hidden">
+        <span>Cuenta destino</span>
+        <select id="txDestination"></select>
+      </label>
+      <label>
+        <span>Fecha</span>
+        <input id="txDate" type="date" required />
+      </label>
+      <label>
+        <span>Nota opcional</span>
+        <input id="txNote" type="text" maxlength="80" placeholder="Ej. Supermercado" />
+      </label>
+      <button class="primary-button" type="submit">Guardar movimiento</button>
+    </form>
+  </section>
+
+  <section class="dialog hidden" id="simpleDialog" aria-modal="true">
+    <div class="dialog-header">
+      <h3 id="dialogTitle">Nuevo</h3>
+      <button class="icon-button" id="closeDialog">×</button>
+    </div>
+    <form id="simpleForm" class="form-stack"></form>
+  </section>
+
+  <section class="dialog hidden" id="settingsDialog" aria-modal="true">
+    <div class="dialog-header">
+      <h3>Ajustes</h3>
+      <button class="icon-button" id="closeSettings">×</button>
+    </div>
+    <div class="settings-stack">
+      <label>
+        <span>Tu nombre</span>
+        <input id="userNameInput" type="text" maxlength="30" placeholder="Christian" />
+      </label>
+      <button class="secondary-button" id="saveNameButton">Guardar nombre</button>
+      <button class="secondary-button" id="exportButton">Exportar respaldo</button>
+      <label class="file-button">
+        Importar respaldo
+        <input id="importInput" type="file" accept="application/json" hidden />
+      </label>
+      <button class="danger-button" id="resetButton">Borrar todos los datos</button>
+      <p class="privacy-note">Tus datos se guardan únicamente en este dispositivo mediante almacenamiento local.</p>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
