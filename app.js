@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "3.2";
+const APP_VERSION = "3.3";
 
 const defaultData = {
   userName: "Christian",
@@ -224,9 +224,16 @@ function renderBudgets(){
   list.innerHTML=data.budgets.map(b=>{
     const spent=spentForCategory(b.category);
     const pct=Math.min(100,b.limit?spent/b.limit*100:0);
-    return `<article class="list-card">
-      <div class="account-row">
+    return `<article class="list-card" data-budget-id="${b.id}">
+      <div class="budget-head">
         <div><p class="tx-title">${icons[b.category]||"•"} ${escapeHtml(b.category)}</p><span class="tx-sub">${money(spent)} de ${money(b.limit)}</span></div>
+        <div class="budget-actions">
+          <button type="button" class="mini-action edit-budget" data-budget-id="${b.id}">Editar</button>
+          <button type="button" class="mini-action delete-budget" data-budget-id="${b.id}">Borrar</button>
+        </div>
+      </div>
+      <div class="account-row" style="margin-top:10px">
+        <span class="tx-sub">Uso mensual</span>
         <strong class="${spent>b.limit?"negative":"positive"}">${Math.round(pct)}%</strong>
       </div>
       <div class="progress"><span style="width:${pct}%;background:${spent>b.limit?"var(--danger)":"var(--accent)"}"></span></div>
@@ -398,6 +405,34 @@ addBudgetButton.addEventListener("click",()=>openSimpleDialog("Nuevo presupuesto
   <label><span>Categoría</span><select name="category">${expenseCategories.map(c=>`<option>${c}</option>`).join("")}</select></label>
   <label><span>Límite mensual</span><input name="limit" type="number" min="1" step="0.01" required></label>`,
   fd=>data.budgets.push({id:crypto.randomUUID(),category:fd.get("category"),limit:Number(fd.get("limit"))})));
+
+document.getElementById("budgetsList").addEventListener("click",event=>{
+  const editButton=event.target.closest(".edit-budget");
+  const deleteButton=event.target.closest(".delete-budget");
+  const id=(editButton||deleteButton)?.dataset.budgetId;
+  if(!id) return;
+  const budget=data.budgets.find(item=>item.id===id);
+  if(!budget) return;
+
+  if(deleteButton){
+    if(confirm(`¿Borrar el presupuesto de ${budget.category}? Tus movimientos no se eliminarán.`)){
+      data.budgets=data.budgets.filter(item=>item.id!==id);
+      saveData();
+      showToast("Presupuesto eliminado");
+    }
+    return;
+  }
+
+  openSimpleDialog("Editar presupuesto",`
+    <label><span>Categoría</span><select name="category">${expenseCategories.map(category=>`<option ${category===budget.category?"selected":""}>${category}</option>`).join("")}</select></label>
+    <label><span>Límite mensual</span><input name="limit" type="number" min="1" step="0.01" required value="${Number(budget.limit)||0}"></label>`,
+    formData=>{
+      budget.category=formData.get("category");
+      budget.limit=Number(formData.get("limit"));
+      showToast("Presupuesto actualizado");
+    }
+  );
+});
 
 addGoalButton.addEventListener("click",()=>openSimpleDialog("Nueva meta",`
   <label><span>Nombre</span><input name="name" required placeholder="Ej. Fondo de emergencia"></label>

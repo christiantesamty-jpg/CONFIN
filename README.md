@@ -1,11 +1,8 @@
-# ConFin v3.2
+# ConFin v3.3
 
-Actualización de limpieza estructural para iPhone:
+Actualización limpia para iPhone:
 
-- Una sola definición de viewport y pantalla completa.
-- Eliminados los parches acumulados de altura.
-- Navegación inferior integrada al layout, sin extensiones artificiales.
-- Safe areas de iOS respetadas.
-- Fecha y nota apiladas en pantallas móviles.
-- Paletas de color conservadas.
-- Los datos existentes continúan en localStorage.
+- La estructura principal usa `position: fixed` con `top/right/bottom/left: 0`, sin `100vh`, `100dvh` ni alturas calculadas.
+- La barra inferior queda anclada al borde real del viewport.
+- Los presupuestos ahora se pueden editar o borrar.
+- Se conserva el almacenamiento local `confin-data-v1`, por lo que los datos existentes no se migran ni eliminan al actualizar.
