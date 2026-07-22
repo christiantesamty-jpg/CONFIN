@@ -2,13 +2,9 @@
   "name": "ConFin",
   "short_name": "ConFin",
   "description": "Tus finanzas personales, privadas y claras.",
-  "start_url": "./?v=3.4",
+  "start_url": "./?v=3.5",
   "scope": "./",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "fullscreen"
-  ],
   "background_color": "#090b10",
   "theme_color": "#090b10",
   "orientation": "portrait-primary",
