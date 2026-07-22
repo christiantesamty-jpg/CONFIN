@@ -1,4 +1,4 @@
-# ConFin 4.0.0
+# ConFin 4.1.0
 
 Reconstrucción limpia desde cero, sin estilos heredados ni parches de versiones anteriores.
 
