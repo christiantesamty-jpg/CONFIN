@@ -1,4 +1,11 @@
-# ConFin v3.1
+# ConFin v3.2
 
-Correccion de viewport completo para PWA en iPhone, incluida la zona segura inferior.
-Mantiene movimientos, cuentas, presupuestos, metas y paletas guardadas en LocalStorage.
+Actualización de limpieza estructural para iPhone:
+
+- Una sola definición de viewport y pantalla completa.
+- Eliminados los parches acumulados de altura.
+- Navegación inferior integrada al layout, sin extensiones artificiales.
+- Safe areas de iOS respetadas.
+- Fecha y nota apiladas en pantallas móviles.
+- Paletas de color conservadas.
+- Los datos existentes continúan en localStorage.

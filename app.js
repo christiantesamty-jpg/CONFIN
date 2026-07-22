@@ -1,6 +1,6 @@
 
 const KEY = "confin-data-v1";
-const APP_VERSION = "3.1";
+const APP_VERSION = "3.2";
 
 const defaultData = {
   userName: "Christian",
