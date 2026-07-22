@@ -1,9 +1,9 @@
-const CACHE = "confin-v3.3";
+const CACHE = "confin-v3.4";
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=3.3",
-  "./app.js?v=3.3",
+  "./styles.css?v=3.4",
+  "./app.js?v=3.4",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png"

@@ -210,3 +210,79 @@ html,body{
   .budget-actions{gap:5px}
   .mini-action{padding:6px 8px}
 }
+
+/* ConFin v3.4 — corrección específica para iOS 26 / PWA instalada */
+:root{
+  --nav-surface:rgba(13,17,22,.985);
+  --nav-total-height:calc(84px + env(safe-area-inset-bottom, 0px));
+}
+html{
+  width:100%;
+  height:100%;
+  min-height:100%;
+  background:var(--nav-surface);
+}
+body{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:100%;
+  overflow:hidden;
+  background:var(--nav-surface);
+}
+.app-shell{
+  position:relative;
+  inset:auto;
+  width:100%;
+  height:100vh;
+  min-height:100vh;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+  overflow:hidden;
+  background:var(--bg);
+}
+#appMain{
+  padding-bottom:calc(var(--nav-total-height) + 62px);
+}
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  min-height:84px;
+  padding-top:10px;
+  padding-right:max(14px,calc((100vw - var(--content-width))/2 + 14px));
+  padding-bottom:max(12px,env(safe-area-inset-bottom,0px));
+  padding-left:max(14px,calc((100vw - var(--content-width))/2 + 14px));
+  background:var(--nav-surface);
+  z-index:30;
+}
+/* WebKit 26 puede reservar visualmente el antiguo espacio de la barra de Safari.
+   Esta extensión pinta esa zona con el mismo fondo de navegación. */
+.bottom-nav::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  height:180px;
+  background:var(--nav-surface);
+  pointer-events:none;
+}
+.fab{
+  position:fixed;
+  right:max(24px,calc((100vw - var(--content-width))/2 + 24px));
+  bottom:calc(66px + max(12px,env(safe-area-inset-bottom,0px)));
+  z-index:35;
+}
+html[data-theme="light"]{
+  --nav-surface:rgba(250,252,255,.985);
+}
+@supports(height:100svh){
+  .bottom-sheet{max-height:calc(100svh - env(safe-area-inset-top,0px));}
+}
+@media(max-width:390px){
+  .bottom-nav{padding-left:8px;padding-right:8px}
+  .fab{right:18px}
+}
