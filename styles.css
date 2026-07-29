@@ -84,3 +84,10 @@ input[type="date"]::-webkit-calendar-picker-indicator{margin-left:auto;flex:0 0 
 .modal-backdrop,.sheet,.form,.field{max-width:100%}
 .bottom-nav{align-self:end}
 @supports not (height:100dvh){:root{--app-height:100%}}
+
+/* ConFin 5.2.3: account totals and reliable goal inputs */
+.account-summary .stat-card{display:flex;flex-direction:column;min-width:0}
+.account-summary-value{display:block;max-width:100%;letter-spacing:-.6px;text-overflow:clip}
+.money-field{-webkit-appearance:none;appearance:none;min-width:0;touch-action:manipulation}
+.form-error{margin:0;padding:12px 14px;border:1px solid color-mix(in srgb,var(--danger) 40%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--danger) 10%,transparent);color:var(--danger);font-weight:750}
+@media(max-width:380px){.account-summary .stat-card{padding:14px}.account-summary-value{letter-spacing:-.8px}}

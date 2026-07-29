@@ -2,7 +2,7 @@
   "name": "ConFin - Finanzas personales",
   "short_name": "ConFin",
   "description": "Control personal de ingresos, gastos, cuentas, presupuestos y metas.",
-  "start_url": "./?v=5.2.1",
+  "start_url": "./?v=5.2.3",
   "scope": "./",
   "display": "standalone",
   "display_override": [
