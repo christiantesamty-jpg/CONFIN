@@ -1,3 +1,11 @@
+# ConFin 4.3.0
+
+Actualización visual y de actividad:
+- Bordes de la tarjeta principal corregidos.
+- Resplandor integrado al fondo y adaptado a cada paleta.
+- Gráfica real de actividad de los últimos 7 días.
+- Caché actualizada para evitar mezclar versiones.
+
 # ConFin 4.2.0
 
 Actualización enfocada en estabilidad de la barra inferior en iPhone y mantenimiento.
