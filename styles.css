@@ -44,3 +44,56 @@ html.ios-standalone{--safe-bottom:max(env(safe-area-inset-bottom,0px),34px);--sa
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 .tx-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:10px}.debug-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;color:var(--muted);font-size:12px}.debug-grid code{color:var(--text)}
+
+/* ConFin 5.1 — layout único y adaptable */
+:root{
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --nav-h:72px;
+  --nav-safe:var(--safe-bottom);
+}
+html.ios-standalone{--nav-safe:max(env(safe-area-inset-bottom,0px),20px)}
+html,body{height:100%;min-height:100%;overflow:hidden}
+body{position:relative;inset:auto;min-height:-webkit-fill-available}
+.app-shell{
+  position:absolute;inset:0;
+  width:100%;height:100%;min-height:0;max-height:none;
+  display:grid;grid-template-rows:minmax(0,1fr) auto;
+  overflow:hidden;
+}
+.view{
+  position:relative;inset:auto;grid-row:1;
+  width:100%;height:auto;min-height:0;max-width:760px;
+  padding:calc(var(--safe-top) + 24px) 18px 36px;
+  overflow-x:hidden;overflow-y:auto;
+  overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;
+}
+.bottom-nav{
+  position:relative;inset:auto;grid-row:2;
+  height:calc(var(--nav-h) + var(--nav-safe));min-height:calc(var(--nav-h) + var(--nav-safe));
+  padding:8px max(10px,var(--safe-right)) var(--nav-safe) max(10px,var(--safe-left));
+  transform:none;
+}
+.bottom-nav:after{display:none}
+.fab{
+  position:absolute;
+  right:max(22px,calc((100vw - 760px)/2 + 22px));
+  bottom:calc(var(--nav-h) + var(--nav-safe) - 18px);
+}
+html[data-screen="compact"] .view{padding-left:14px;padding-right:14px}
+html[data-screen="compact"] .title{font-size:32px}
+html[data-screen="compact"] .hero{padding:21px}
+html[data-screen="compact"] .nav-item{font-size:10px}
+html[data-screen="xlarge"] .view{padding-left:22px;padding-right:22px}
+
+.reminder-strip{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;padding:15px 17px;border:1px solid color-mix(in srgb,var(--warning) 38%,var(--line));border-radius:18px;background:color-mix(in srgb,var(--warning) 10%,var(--surface));box-shadow:var(--shadow)}
+.reminder-strip div{display:grid;gap:3px}.reminder-strip span{color:var(--muted);font-size:13px;font-weight:650}.reminder-strip b{color:var(--warning);white-space:nowrap}
+.credit-card{display:grid;gap:14px}.credit-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.credit-metrics>div{padding:13px;border-radius:16px;background:var(--surface-2);display:grid;gap:5px}.credit-metrics span,.credit-payments span{color:var(--muted);font-size:12px;font-weight:700}.credit-metrics b,.credit-payments b{color:var(--text)}
+.credit-payments{display:grid;grid-template-columns:1fr 1fr;gap:10px}.credit-payments>span{display:grid;gap:4px;padding:11px 12px;border:1px solid var(--line);border-radius:14px}
+.due-pill{justify-self:start;padding:8px 11px;border-radius:999px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);font-size:12px;font-weight:800}.due-pill.urgent{background:color-mix(in srgb,var(--warning) 13%,transparent);color:var(--warning)}
+.compact-select{width:auto;min-width:92px;padding:9px 11px;border-radius:12px;background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+.field-note{display:block;margin-top:7px;color:var(--muted);font-size:12px}.check-row{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:700}.check-row input{width:18px;height:18px;accent-color:var(--accent)}
+@media (max-width:380px){.credit-metrics,.credit-payments{grid-template-columns:1fr}.grid-2{gap:10px}.stat-card{padding:16px}}
+@media (orientation:landscape) and (max-height:500px){.view{padding-top:calc(var(--safe-top) + 12px)}.header{margin-bottom:16px}.bottom-nav{--nav-h:58px}.nav-item span{display:none}.fab{width:58px;height:58px}}

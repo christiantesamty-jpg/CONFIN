@@ -1,21 +1,23 @@
-# ConFin 4.3.0
+# ConFin 5.1
 
-Actualización visual y de actividad:
-- Bordes de la tarjeta principal corregidos.
-- Resplandor integrado al fondo y adaptado a cada paleta.
-- Gráfica real de actividad de los últimos 7 días.
-- Caché actualizada para evitar mezclar versiones.
+Actualización limpia sobre la base 4.3, manteniendo la misma clave de datos para conservar la información existente.
 
-# ConFin 4.2.0
+## Incluye
+- Layout único con CSS Grid: contenido desplazable + barra inferior independiente.
+- Adaptación automática por tamaño de pantalla (compact, regular, large, xlarge).
+- Safe areas de iPhone mediante `env(safe-area-inset-*)`.
+- Temas centralizados con variables CSS.
+- Tarjetas de crédito: límite, deuda, disponible, corte, vencimiento, pago mínimo y pago para no generar intereses.
+- Recordatorios dentro de la app y notificación al abrir cuando el pago está próximo.
+- Diagnóstico de pantalla en Configuración.
 
-Actualización enfocada en estabilidad de la barra inferior en iPhone y mantenimiento.
+## Actualización
+Sube todos los archivos reemplazando los actuales. No mezcles archivos individuales de versiones anteriores.
 
-## Cambios
-- Contenedor de aplicación con altura estable calculada una sola vez al abrir.
-- En iPhone instalado, usa la altura física de la pantalla y áreas seguras con respaldo para Dynamic Island y Home Indicator.
-- La barra inferior es hija absoluta del contenedor raíz; no depende de la pantalla ni del contenido.
-- El contenido de todas las secciones usa el mismo rectángulo entre la parte superior y la barra.
-- Botón para actualizar la aplicación desde Configuración.
-- Versión y estado de pantalla visibles en Configuración.
-- Movimientos editables y eliminables.
-- Caché renovada a 4.2.0.
+
+## Correcciones 5.1.1
+- Formulario de ingresos, gastos y transferencias corregido.
+- El botón flotante ya no envía el evento táctil como si fuera un movimiento existente.
+- Validación defensiva antes de editar movimientos.
+- Las notificaciones visuales se cierran al abrir formularios o cambiar de pantalla.
+- Caché, manifiesto y archivos sincronizados con la misma versión.
