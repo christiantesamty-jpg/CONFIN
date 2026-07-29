@@ -12,10 +12,10 @@
   <meta name="color-scheme" content="dark light">
   <title>ConFin</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=5.2.4">
-  <link rel="stylesheet" href="styles.css?v=5.2.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=5.3.0">
+  <link rel="stylesheet" href="styles.css?v=5.3.0">
 </head>
-<body>
+<body class="security-pending">
   <div id="app" class="app-shell">
     <main id="view" class="view" aria-live="polite"></main>
 
@@ -42,10 +42,21 @@
     </nav>
   </div>
 
+  <div id="lockScreen" class="lock-screen" aria-hidden="true">
+    <div class="lock-card">
+      <div class="lock-mark" aria-hidden="true">CF</div>
+      <p class="eyebrow">ConFin protegido</p>
+      <h1>Desbloquear con Face ID</h1>
+      <p id="lockMessage">Confirma tu identidad para ver tus finanzas.</p>
+      <button id="unlockButton" class="primary-btn lock-button" type="button">Usar Face ID</button>
+      <button id="disableLockButton" class="lock-help" type="button">Problemas para entrar</button>
+    </div>
+  </div>
+
   <div id="modalRoot"></div>
   <input id="importFile" type="file" accept="application/json" hidden>
   <div id="toast" class="toast" role="status"></div>
 
-  <script src="app.js?v=5.2.4" defer></script>
+  <script src="app.js?v=5.3.0" defer></script>
 </body>
 </html>

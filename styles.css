@@ -101,3 +101,18 @@ input[type="date"]::-webkit-calendar-picker-indicator{margin-left:auto;flex:0 0 
 .credit-card-actions{display:flex;flex:0 0 auto;gap:8px;align-items:center}
 .credit-card-actions .small-btn{min-width:64px}
 @media(max-width:390px){.hero{padding:22px}.hero-row{gap:8px}.privacy{padding:8px 11px;max-width:84px}.credit-card .row-between{align-items:flex-start}.credit-card-actions{flex-direction:column;gap:6px}.credit-card-actions .small-btn{width:70px}}
+
+
+/* ConFin 5.3.0: local Face ID privacy lock */
+.security-pending .app-shell{visibility:hidden}
+.lock-screen{position:fixed;z-index:1000;inset:0;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));background:radial-gradient(circle at 72% 10%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 38%),var(--bg);color:var(--text)}
+.app-locked{overflow:hidden}
+.app-locked .app-shell,.app-locked #modalRoot,.app-locked .toast{visibility:hidden;pointer-events:none}
+.app-locked .lock-screen{display:flex}
+.lock-card{width:min(100%,390px);padding:34px 26px;border:1px solid var(--line);border-radius:32px;background:color-mix(in srgb,var(--surface) 94%,transparent);box-shadow:0 30px 90px rgba(0,0,0,.5);text-align:center}
+.lock-card h1{margin:8px 0 12px;font-size:30px;line-height:1.08}
+.lock-card p{color:var(--muted);line-height:1.45}
+.lock-mark{display:grid;place-items:center;width:88px;height:88px;margin:0 auto 22px;border-radius:27px;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 25%,var(--surface-2)),var(--surface));border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));color:var(--accent);font-size:34px;font-weight:950;letter-spacing:-3px;box-shadow:0 18px 40px color-mix(in srgb,var(--accent) 12%,transparent)}
+.lock-button{width:100%;margin-top:18px}
+.lock-button:disabled{opacity:.65}
+.lock-help{margin-top:16px;border:0;background:none;color:var(--muted);font-weight:750;text-decoration:underline;text-underline-offset:4px}
