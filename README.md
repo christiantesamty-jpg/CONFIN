@@ -1,18 +1,13 @@
-# ConFin 4.1.0
+# ConFin 4.2.0
 
-Reconstrucción limpia desde cero, sin estilos heredados ni parches de versiones anteriores.
+Actualización enfocada en estabilidad de la barra inferior en iPhone y mantenimiento.
 
-## Incluye
-- Diseño PWA para iPhone con navegación fija y safe areas.
-- Ingresos, gastos y transferencias.
-- Categorías separadas para ingresos y gastos.
-- Cuentas, ahorro, inversión y tarjetas de crédito.
-- Presupuestos editables y eliminables.
-- Metas editables y eliminables.
-- Cinco paletas, incluido modo claro con contraste corregido.
-- Privacidad, notificaciones locales, respaldo e importación.
-- Pantalla de versión en Configuración.
-- Migración automática desde `confin-data-v1`.
-
-## Publicación
-Sube el contenido de esta carpeta a la raíz de GitHub Pages. No subas el ZIP.
+## Cambios
+- Contenedor de aplicación con altura estable calculada una sola vez al abrir.
+- En iPhone instalado, usa la altura física de la pantalla y áreas seguras con respaldo para Dynamic Island y Home Indicator.
+- La barra inferior es hija absoluta del contenedor raíz; no depende de la pantalla ni del contenido.
+- El contenido de todas las secciones usa el mismo rectángulo entre la parte superior y la barra.
+- Botón para actualizar la aplicación desde Configuración.
+- Versión y estado de pantalla visibles en Configuración.
+- Movimientos editables y eliminables.
+- Caché renovada a 4.2.0.
