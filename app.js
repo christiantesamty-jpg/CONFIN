@@ -1,6 +1,6 @@
 "use strict";
-const VERSION="5.2.0";
-const BUILD="2026.07.29";
+const VERSION="5.2.1";
+const BUILD="2026.07.29.2";
 const KEY="confin-v4-data";
 const OLD_KEYS=["confin-data-v1","confin-data-v2","confin-data"];
 const uid=()=>crypto.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -12,19 +12,40 @@ const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="M
 const isStandalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 function updateDisplayProfile(){
   const root=document.documentElement;
-  root.classList.toggle("ios-standalone",Boolean(isIOS&&isStandalone));
-  const w=Math.round(window.innerWidth),h=Math.round(window.innerHeight);
-  const short=Math.min(w,h),long=Math.max(w,h);
+  const standaloneIOS=Boolean(isIOS&&isStandalone);
+  root.classList.toggle("ios-standalone",standaloneIOS);
+
+  const viewportWidth=Math.round(window.visualViewport?.width||window.innerWidth||document.documentElement.clientWidth);
+  const viewportHeight=Math.round(window.visualViewport?.height||window.innerHeight||document.documentElement.clientHeight);
+  const screenWidth=Math.round(window.screen?.width||viewportWidth);
+  const screenHeight=Math.round(window.screen?.height||viewportHeight);
+
+  // In an installed iPhone PWA, WebKit can report a viewport shorter than the physical
+  // application surface and leave a blank strip under the tab bar. Use the screen
+  // dimensions only in standalone mode; browsers continue using the live viewport.
+  const portrait=screenHeight>=screenWidth;
+  const appHeight=standaloneIOS
+    ? (portrait?Math.max(screenHeight,viewportHeight):Math.max(screenWidth,viewportHeight))
+    : viewportHeight;
+  const appWidth=standaloneIOS
+    ? (portrait?Math.max(screenWidth,viewportWidth):Math.max(screenHeight,viewportWidth))
+    : viewportWidth;
+
+  const short=Math.min(appWidth,appHeight),long=Math.max(appWidth,appHeight);
   const profile=short<=375?"compact":short<=390?"regular":short<=414?"large":"xlarge";
   root.dataset.screen=profile;
-  root.style.setProperty("--screen-width",`${w}px`);
-  root.style.setProperty("--screen-height",`${h}px`);
+  root.style.setProperty("--screen-width",`${appWidth}px`);
+  root.style.setProperty("--screen-height",`${appHeight}px`);
+  root.style.setProperty("--app-height",`${appHeight}px`);
   root.style.setProperty("--viewport-long",`${long}px`);
 }
 updateDisplayProfile();
 window.addEventListener("pageshow",updateDisplayProfile);
-window.addEventListener("orientationchange",()=>setTimeout(updateDisplayProfile,250));
-window.addEventListener("resize",()=>{if(!document.activeElement||!["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))updateDisplayProfile()},{passive:true});
+window.addEventListener("orientationchange",()=>setTimeout(updateDisplayProfile,300));
+window.addEventListener("resize",()=>{
+  const tag=document.activeElement?.tagName;
+  if(!["INPUT","TEXTAREA","SELECT"].includes(tag))updateDisplayProfile();
+},{passive:true});
 let state=load();let route="home";let filter="all";
 const $=s=>document.querySelector(s);const view=$("#view"),modalRoot=$("#modalRoot"),fab=$("#fab"),toast=$("#toast");
 function clone(v){return JSON.parse(JSON.stringify(v))}
@@ -47,7 +68,7 @@ function accountBalance(id){const a=state.accounts.find(x=>x.id===id);let b=Numb
 function monthTx(){return state.transactions.filter(t=>monthKey(t.date)===currentMonth())}
 function daysUntilDay(day){if(!day)return null;const now=new Date(),target=new Date(now.getFullYear(),now.getMonth(),Math.min(day,new Date(now.getFullYear(),now.getMonth()+1,0).getDate()),12);if(target<new Date(now.getFullYear(),now.getMonth(),now.getDate(),12))target.setMonth(target.getMonth()+1);return Math.ceil((target-new Date(now.getFullYear(),now.getMonth(),now.getDate(),12))/86400000)}
 function creditReminders(){return state.accounts.filter(a=>a.type==="credit"&&a.reminders!==false).map(a=>{const due=daysUntilDay(a.dueDay),debt=Math.max(0,-accountBalance(a.id));return {account:a,due,debt}}).filter(x=>x.debt>0&&x.due!==null&&x.due<=state.reminderLeadDays).sort((a,b)=>a.due-b.due)}
-function screenProfile(){const w=Math.round(window.innerWidth),h=Math.round(window.innerHeight),profile=document.documentElement.dataset.screen||"regular";return `${isStandalone?"App instalada":"Navegador"} · ${w} × ${h} · ${profile}`}
+function screenProfile(){const w=Math.round(window.innerWidth),h=Math.round(window.innerHeight),sh=Math.round(window.screen?.height||h),profile=document.documentElement.dataset.screen||"regular";return `${isStandalone?"App instalada":"Navegador"} · vista ${w} × ${h} · pantalla ${sh} · ${profile}`}
 function shell(title,content,subtitle=`Hola, ${esc(state.userName||"tú")} 👋`){return `<header class="header"><div><p class="eyebrow">${subtitle}</p><h1 class="title">${title}</h1></div><button class="icon-button" data-action="settings" aria-label="Configuración"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.55V21h-4v-.08A1.7 1.7 0 0 0 8.97 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.52-1.03H3v-4h.08A1.7 1.7 0 0 0 4.6 8.94a1.7 1.7 0 0 0-.34-1.88L4.2 7l2.83-2.83.06.06A1.7 1.7 0 0 0 8.97 4.6 1.7 1.7 0 0 0 10 3.08V3h4v.08a1.7 1.7 0 0 0 1.03 1.52 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 7l-.06.06a1.7 1.7 0 0 0-.34 1.88A1.7 1.7 0 0 0 20.92 10H21v4h-.08A1.7 1.7 0 0 0 19.4 15Z"/></svg></button></header>${content}`}
 function fitAmounts(){document.querySelectorAll("[data-fit-amount]").forEach(el=>{const max=Number(el.dataset.maxSize||48),min=Number(el.dataset.minSize||24);el.style.fontSize=`${max}px`;let size=max;while(size>min&&el.scrollWidth>el.clientWidth){size-=1;el.style.fontSize=`${size}px`}})}
 function render(){document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.route===route));fab.classList.toggle("hidden",route==="settings");const fn={home:homeView,transactions:transactionsView,budgets:budgetsView,goals:goalsView,accounts:accountsView,settings:settingsView}[route]||homeView;view.innerHTML=fn();view.scrollTop=0;requestAnimationFrame(fitAmounts)}

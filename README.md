@@ -1,4 +1,4 @@
-# ConFin 5.2.0
+# ConFin 5.2.1
 
 Actualización consolidada para iPhone:
 - cantidades adaptables sin saltos de línea;
