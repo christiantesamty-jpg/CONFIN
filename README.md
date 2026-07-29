@@ -10,3 +10,11 @@ Actualización consolidada para iPhone:
 - icono minimalista de signo de pesos.
 
 Los datos siguen usando la clave local `confin-v4-data`.
+
+
+## Versión 5.2.4
+- Botón Privado fijo dentro de la tarjeta principal.
+- Deuda inicial editable en tarjetas de crédito.
+- Pagos de tarjeta mediante transferencia desde cualquier cuenta con saldo.
+- Botón Pagar en cada tarjeta de crédito.
+- Botón flotante separado de la barra inferior.

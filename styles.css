@@ -23,7 +23,7 @@ html.ios-standalone{--safe-bottom:max(env(safe-area-inset-bottom,0px),34px);--sa
 .nav-item{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;min-width:0;height:58px;padding:4px 2px;color:var(--muted);font-size:11px;font-weight:700}
 .nav-item svg{width:25px;height:25px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .nav-item span{display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}.nav-item.active{color:var(--accent)}
-.fab{position:absolute;z-index:60;right:max(20px,calc((100vw - 760px)/2 + 20px));bottom:calc(72px + var(--safe-bottom) - 14px);width:66px;height:66px;border:0;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 85%,white),var(--accent));color:#041109;box-shadow:0 15px 36px color-mix(in srgb,var(--accent) 35%,transparent)}
+.fab{position:absolute;z-index:60;right:max(20px,calc((100vw - 760px)/2 + 20px));bottom:calc(72px + var(--safe-bottom) + 10px);width:66px;height:66px;border:0;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 85%,white),var(--accent));color:#041109;box-shadow:0 15px 36px color-mix(in srgb,var(--accent) 35%,transparent)}
 .fab svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}.fab.hidden{display:none}
 html.sheet-open .app-shell{pointer-events:none}
 
@@ -91,3 +91,13 @@ input[type="date"]::-webkit-calendar-picker-indicator{margin-left:auto;flex:0 0 
 .money-field{-webkit-appearance:none;appearance:none;min-width:0;touch-action:manipulation}
 .form-error{margin:0;padding:12px 14px;border:1px solid color-mix(in srgb,var(--danger) 40%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--danger) 10%,transparent);color:var(--danger);font-weight:750}
 @media(max-width:380px){.account-summary .stat-card{padding:14px}.account-summary-value{letter-spacing:-.8px}}
+
+
+/* ConFin 5.2.4: stable hero controls, credit payments and FAB spacing */
+.hero-row{min-width:0}
+.hero-main{flex:1 1 auto;min-width:0;overflow:hidden}
+.hero-main .hero-value{max-width:100%;margin-right:0}
+.privacy{flex:0 0 auto;max-width:96px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.credit-card-actions{display:flex;flex:0 0 auto;gap:8px;align-items:center}
+.credit-card-actions .small-btn{min-width:64px}
+@media(max-width:390px){.hero{padding:22px}.hero-row{gap:8px}.privacy{padding:8px 11px;max-width:84px}.credit-card .row-between{align-items:flex-start}.credit-card-actions{flex-direction:column;gap:6px}.credit-card-actions .small-btn{width:70px}}
