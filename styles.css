@@ -116,3 +116,10 @@ input[type="date"]::-webkit-calendar-picker-indicator{margin-left:auto;flex:0 0 
 .lock-button{width:100%;margin-top:18px}
 .lock-button:disabled{opacity:.65}
 .lock-help{margin-top:16px;border:0;background:none;color:var(--muted);font-weight:750;text-decoration:underline;text-underline-offset:4px}
+
+/* ConFin 5.4.0: categorías personalizadas */
+.settings-note{margin:-4px 0 12px;color:var(--muted);font-size:13px;line-height:1.45}
+.emoji-input{font-size:32px;text-align:center}
+.settings-group .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+
+.category-color{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}.color-input{height:52px;padding:6px}.update-card h2{margin:5px 0 10px}.update-card p{color:var(--muted);line-height:1.5}.update-list{padding-left:20px;color:var(--muted);line-height:1.6;margin:14px 0 20px}

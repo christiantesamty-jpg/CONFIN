@@ -1,0 +1,10 @@
+{
+  "version": "5.4.0",
+  "message": "Categorías inteligentes y protección de datos.",
+  "changes": [
+    "Categorías con ID, emoji y color",
+    "Barbería / Estética y GymPass",
+    "Respaldo completo y migración segura",
+    "Aviso automático de futuras actualizaciones"
+  ]
+}
