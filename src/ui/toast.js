@@ -1,0 +1,1 @@
+let timer;export function toast(message,type="ok"){let el=document.querySelector(".toast");if(!el){el=document.createElement("div");el.className="toast";document.body.append(el)}el.textContent=message;el.dataset.type=type;el.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>el.classList.remove("show"),2200)}

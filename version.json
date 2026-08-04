@@ -1,0 +1,10 @@
+{
+  "version": "6.0.0",
+  "build": "2026.08.04",
+  "notes": [
+    "Arquitectura modular nueva",
+    "Navegación y formularios estabilizados",
+    "Categorías personalizables de ingresos y gastos",
+    "Migración protegida de datos anteriores"
+  ]
+}
