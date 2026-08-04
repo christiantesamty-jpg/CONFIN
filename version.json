@@ -1,10 +1,10 @@
 {
-  "version": "5.4.0",
-  "message": "Categorías inteligentes y protección de datos.",
+  "version": "5.4.1",
+  "message": "Categorías de ingresos personalizables y diseño de ajustes corregido.",
   "changes": [
-    "Categorías con ID, emoji y color",
-    "Barbería / Estética y GymPass",
-    "Respaldo completo y migración segura",
-    "Aviso automático de futuras actualizaciones"
+    "Botón Agregar sin superponerse con el texto",
+    "Categorías de ingresos personalizables",
+    "Emojis y colores incluidos en respaldos",
+    "Migración segura de ingresos anteriores"
   ]
 }
