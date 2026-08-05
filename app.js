@@ -1,6 +1,6 @@
 "use strict";
-const VERSION="5.3.1";
-const BUILD="2026.08.05.1";
+const VERSION="5.3.2";
+const BUILD="2026.08.05.2";
 const KEY="confin-v4-data";
 const BACKUP_KEY="confin-v4-data-backup";
 const SECURITY_KEY="confin-security-v1";
@@ -85,6 +85,12 @@ window.addEventListener("resize",()=>{
 },{passive:true});
 let state=load();let route="home";let filter="all";
 const $=s=>document.querySelector(s);const view=$("#view"),modalRoot=$("#modalRoot"),fab=$("#fab"),toast=$("#toast"),lockScreen=$("#lockScreen"),unlockButton=$("#unlockButton"),disableLockButton=$("#disableLockButton"),lockMessage=$("#lockMessage");
+
+function palette(id,name,colors){return `<button class="palette ${state.theme===id?"active":""}" data-theme="${id}" type="button"><span class="palette-dots">${colors.map(c=>`<i style="background:${c}"></i>`).join("")}</span><strong>${name}</strong></button>`}
+function hideToast(){clearTimeout(showToast.t);toast?.classList.remove("show");if(toast)toast.textContent=""}
+function showToast(msg){if(!toast)return;hideToast();toast.textContent=msg;toast.classList.add("show");showToast.t=setTimeout(hideToast,2200)}
+function openSheet(title,body){hideToast();document.documentElement.classList.add("sheet-open");if(modalRoot)modalRoot.innerHTML=`<div class="modal-backdrop"><section class="sheet"><div class="handle"></div><div class="sheet-head"><h2>${esc(title)}</h2><button class="close-btn" data-close type="button">×</button></div>${body}</section></div>`}
+function closeSheet(){document.documentElement.classList.remove("sheet-open");if(modalRoot)modalRoot.innerHTML=""}
 
 function loadSecurity(){try{return {...{enabled:false,credentialId:"",userId:""},...JSON.parse(localStorage.getItem(SECURITY_KEY)||"{}")}}catch{return {enabled:false,credentialId:"",userId:""}}}
 function saveSecurity(value){localStorage.setItem(SECURITY_KEY,JSON.stringify(value))}
@@ -198,4 +204,4 @@ document.addEventListener("visibilitychange",()=>{if(document.visibilityState===
 unlockButton?.addEventListener("click",authenticateFaceId);
 disableLockButton?.addEventListener("click",()=>{if(confirm("Esto quitará la protección de este dispositivo. ¿Continuar?")){saveSecurity({enabled:false,credentialId:"",userId:""});unlockApp();route="settings";render();showToast("Protección desactivada")}});
 setTimeout(checkDueNotifications,500);setTimeout(()=>checkForUpdates(false),1800);
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js?v=5.3.1"));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js?v=5.3.2"));
