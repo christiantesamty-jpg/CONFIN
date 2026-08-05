@@ -1,10 +1,10 @@
 {
-  "version": "6.0.0",
-  "build": "2026.08.04",
+  "version": "6.0.2",
+  "required": false,
   "notes": [
-    "Arquitectura modular nueva",
-    "Navegación y formularios estabilizados",
-    "Categorías personalizables de ingresos y gastos",
-    "Migración protegida de datos anteriores"
+    "Navegación y botones corregidos",
+    "Pantalla completa y barra inferior estable",
+    "Icono de configuración homogéneo",
+    "Corrección de sintaxis en utilidades"
   ]
 }

@@ -7,23 +7,16 @@ import { checkUpdates } from "./modules/updates.js";
 let route = "home";
 
 const appRoot = document.querySelector("#app");
-
-if (!appRoot) {
-  throw new Error("No se encontró el contenedor principal #app.");
-}
+if (!appRoot) throw new Error("No se encontró el contenedor principal #app.");
 
 appRoot.innerHTML = shell();
 
 const viewport = document.querySelector("#viewport");
 const appShell = document.querySelector(".app");
-
-if (!viewport || !appShell) {
-  throw new Error("No se pudo inicializar la estructura de ConFin.");
-}
+if (!viewport || !appShell) throw new Error("No se pudo inicializar ConFin.");
 
 function render() {
   const state = getState();
-
   document.body.dataset.theme = state.theme || "midnight";
 
   const pageRenderer = pages[route] || pages.home;
@@ -34,18 +27,16 @@ function render() {
     button.classList.toggle("active", button.dataset.route === route);
   });
 
-  // Importante: conecta eventos en toda la app,
-  // no únicamente dentro de #viewport.
+  // Los elementos de cada pantalla se vuelven a crear en cada render.
+  // Por eso conectamos sus acciones después de pintar la pantalla.
   bindActions(appShell, render);
 }
 
 window.addEventListener("route", (event) => {
   const requestedRoute = event.detail;
-
-  if (pages[requestedRoute]) {
-    route = requestedRoute;
-    render();
-  }
+  if (!pages[requestedRoute]) return;
+  route = requestedRoute;
+  render();
 });
 
 subscribe(render);
@@ -57,6 +48,4 @@ if ("serviceWorker" in navigator) {
     .catch((error) => console.warn("Service worker:", error));
 }
 
-window.setTimeout(() => {
-  checkUpdates(true);
-}, 1800);
+window.setTimeout(() => checkUpdates(true), 1800);
