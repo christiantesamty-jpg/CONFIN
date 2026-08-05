@@ -1,13 +1,16 @@
 {
-  "id": "./",
-  "name": "ConFin",
+  "name": "ConFin - Finanzas personales",
   "short_name": "ConFin",
-  "description": "Finanzas personales privadas",
-  "start_url": "./?source=pwa",
+  "description": "Control personal de ingresos, gastos, cuentas, presupuestos y metas.",
+  "start_url": "./?v=5.3.1",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#07100d",
-  "theme_color": "#07100d",
+  "display_override": [
+    "standalone",
+    "fullscreen"
+  ],
+  "background_color": "#080b12",
+  "theme_color": "#080b12",
   "orientation": "portrait-primary",
   "icons": [
     {
