@@ -1,1 +1,0 @@
-import{load,persist}from"./storage.js";let state=load();const listeners=new Set();export const getState=()=>state;export function setState(next){state=typeof next==="function"?next(state):next;persist(state);listeners.forEach(fn=>fn(state))}export function subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn)}
