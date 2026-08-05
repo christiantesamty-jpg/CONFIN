@@ -1,0 +1,12 @@
+{
+  "version": "5.3.1",
+  "message": "Categorías personalizadas para ingresos y gastos sobre la base estable 5.3.0.",
+  "changes": [
+    "Crear y editar categorías de gastos",
+    "Crear y editar categorías de ingresos",
+    "Emoji y color personalizables",
+    "Protección de categorías utilizadas",
+    "Barbería / Estética y GymPass agregadas",
+    "Educación y Ahorro retiradas para movimientos nuevos"
+  ]
+}
