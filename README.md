@@ -1,15 +1,31 @@
-# ConFin 5.3.1 — Categorías personalizadas
+# ConFin 5.2.3
 
-Actualización construida sobre la base estable ConFin 5.3.0.
+Actualización consolidada para iPhone:
+- cantidades adaptables sin saltos de línea;
+- formularios bloqueados horizontalmente;
+- edición y borrado de ingresos y gastos desde Inicio;
+- botones de presupuestos homogéneos;
+- navegación inferior ajustada al área segura;
+- aviso de paleta eliminado;
+- icono minimalista de signo de pesos.
 
-## Cambios
-- Categorías personalizables de gastos e ingresos.
-- Nombre, emoji y color editables.
-- Categorías personalizadas incluidas en exportación e importación.
-- Protección al eliminar categorías utilizadas: primero se reasignan los movimientos.
-- IDs internos estables para conservar movimientos al renombrar.
-- Barbería / Estética y GymPass agregadas como gastos predeterminados.
-- Educación y Ahorro ya no aparecen para movimientos nuevos; los movimientos históricos se conservan.
+Los datos siguen usando la clave local `confin-v4-data`.
 
-## Conservación de datos
-Mantiene la clave localStorage `confin-v4-data` y migra los datos existentes sin borrar movimientos, cuentas, presupuestos, metas ni configuración.
+
+## Versión 5.3.0
+- Botón Privado fijo dentro de la tarjeta principal.
+- Deuda inicial editable en tarjetas de crédito.
+- Pagos de tarjeta mediante transferencia desde cualquier cuenta con saldo.
+- Botón Pagar en cada tarjeta de crédito.
+- Botón flotante separado de la barra inferior.
+
+
+## Seguridad local
+Face ID usa el autenticador del iPhone mediante WebAuthn. Los datos siguen almacenados localmente bajo la clave `confin-v4-data`, por lo que una actualización del código no los borra.
+
+## Versión 5.3.4
+- Nueva sección desplegable **Historial mensual** al final de Inicio.
+- Totales por mes de ingresos, gastos y porcentaje de ahorro.
+- Fechas automáticas calculadas con la zona horaria local del dispositivo.
+- Tarjetas de movimientos contenidas y adaptables a pantallas estrechas.
+- Conserva categorías personalizadas de ingresos y gastos con ID, emoji y color.

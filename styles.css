@@ -117,22 +117,31 @@ input[type="date"]::-webkit-calendar-picker-indicator{margin-left:auto;flex:0 0 
 .lock-button:disabled{opacity:.65}
 .lock-help{margin-top:16px;border:0;background:none;color:var(--muted);font-weight:750;text-decoration:underline;text-underline-offset:4px}
 
-/* ConFin 5.4.0: categorías personalizadas */
-.settings-note{margin:-4px 0 12px;color:var(--muted);font-size:13px;line-height:1.45}
-.emoji-input{font-size:32px;text-align:center}
-.settings-group .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-
-.category-color{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}.color-input{height:52px;padding:6px}.update-card h2{margin:5px 0 10px}.update-card p{color:var(--muted);line-height:1.5}.update-list{padding-left:20px;color:var(--muted);line-height:1.6;margin:14px 0 20px}
-
-
-/* ConFin 5.4.1: encabezados de categorías e ingresos personalizables */
-.category-section-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:14px;margin-bottom:12px}
-.category-section-copy{min-width:0}
-.category-section-copy h3{margin:0 0 7px}
-.category-section-copy .settings-note{margin:0;max-width:48ch}
-.category-add-btn{align-self:start;white-space:nowrap}
-.category-list{display:grid}
-.category-list .setting-row:first-child{border-radius:20px 20px 0 0}
-.category-list .setting-row:last-child{border-bottom:1px solid var(--line);border-radius:0 0 20px 20px}
-.category-list .setting-row:only-child{border-radius:20px;border-bottom:1px solid var(--line)}
-@media(max-width:430px){.category-section-head{grid-template-columns:1fr}.category-add-btn{justify-self:start}.category-section-copy .settings-note{max-width:none}.category-settings .setting-row{align-items:flex-start}.category-settings .setting-row>div:first-child{min-width:0;overflow-wrap:anywhere}}
+/* ConFin 5.3.4: tarjetas contenidas e historial mensual */
+.view{padding-bottom:120px}
+.list-card,.tx-row,.tx-left,.tx-left>div{min-width:0;max-width:100%}
+.tx-left{flex:1 1 auto;overflow:hidden}
+.tx-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.amount{flex:0 1 auto;max-width:42%;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.history-section{margin-bottom:10px}
+.monthly-history{border:1px solid var(--line);border-radius:24px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.monthly-history-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 20px;border:0;background:transparent;color:var(--text);text-align:left;cursor:pointer;user-select:none}
+.monthly-history-toggle span:first-child{display:grid;gap:4px;min-width:0}
+.monthly-history-toggle small{color:var(--muted);font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.65px}
+.monthly-history-toggle strong{font-size:21px}
+.history-chevron{font-size:25px;color:var(--accent);transition:transform .2s ease}
+.monthly-history.open .history-chevron{transform:rotate(180deg)}
+.monthly-history-body{display:grid;gap:11px;padding:0 14px 14px;border-top:1px solid var(--line)}
+.monthly-history-body[hidden]{display:none}
+.month-card{min-width:0;padding:16px 4px 4px}
+.month-card+.month-card{border-top:1px solid var(--line)}
+.month-card h3{margin:0 0 12px;font-size:17px}
+.month-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.month-metrics>div{min-width:0;padding:11px 9px;border-radius:14px;background:var(--surface-2)}
+.month-metrics span{display:block;margin-bottom:5px;color:var(--muted);font-size:11px;font-weight:750}
+.month-metrics b{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px}
+.history-empty{padding:24px 12px 12px;color:var(--muted);text-align:center;line-height:1.45}
+.settings-note{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.45}
+.category-color{display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:50%;vertical-align:1px}
+.color-input{height:52px;padding:6px}
+@media(max-width:360px){.month-metrics{grid-template-columns:1fr}.amount{max-width:38%}}

@@ -1,10 +1,10 @@
 {
-  "version": "5.3.2",
-  "message": "Corrección de navegación y botones en categorías personalizadas.",
+  "version": "5.3.4",
+  "build": "2026.09.01.1",
+  "message": "Historial mensual disponible al final de Inicio.",
   "changes": [
-    "Navegación restaurada",
-    "Botón + restaurado",
-    "Modales y avisos corregidos",
-    "Categorías personalizadas conservadas"
+    "Consulta ingresos, gastos y porcentaje de ahorro de meses anteriores.",
+    "Fechas locales y tarjetas de movimientos corregidas.",
+    "Categorías personalizadas de ingresos y gastos preservadas."
   ]
 }
