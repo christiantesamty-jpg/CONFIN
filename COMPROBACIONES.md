@@ -1,36 +1,24 @@
-# Comprobaciones — ConFin 5.3.6 RC1
+# ConFin 5.3.7 - Evidencia y pendientes
 
-## Comparación concreta: ConFin 5.3.5 vs VapeZone Business 2.18.4
+## Revisión del problema
 
-| Componente | ConFin anterior | VapeZone Business 2.18.4 | ConFin 5.3.6 |
-| --- | --- | --- | --- |
-| Meta iOS status bar | `black-translucent` | `default` | `default` |
-| Raíz de contenido | `fixed; inset:0; block-size:100dvh` | `.workspace { min-height:100vh }`, documento desplazable | `position:relative; min-height:100vh` |
-| Scroll principal | `#view { overflow-y:auto }` con `html/body overflow:hidden` | scroll normal del documento | scroll normal del documento |
-| Navegación móvil | como fila de grid dentro del fijo | `position:fixed; bottom:0` | `position:fixed; bottom:0` |
-| Área inferior | safe bottom solo en barra | safe bottom solo en barra | safe bottom solo en barra y espacio final del contenido |
+- En el código 5.3.6, `service-worker.js` precacheaba `./index.html` y servía esa respuesta a cualquier navegación. Cloudflare Pages documenta redirecciones automáticas de URLs de archivos HTML a rutas canónicas. Safari/WebKit puede rechazar `event.respondWith` si la respuesta conservó `redirected: true`.
+- La nueva versión cachea `./` (ruta canónica) y reconstruye respuestas antes de almacenarlas/servirlas; descarta metadatos de redirección y encabezados propios de la compresión de transporte.
+- Se activa el nuevo SW de manera inmediata para intentar recuperar instalaciones que no cargan; solo se eliminan caches `confin-static-*`, no `localStorage` ni `IndexedDB`.
 
-No se copiaron componentes financieros, marcas, datos de clientes ni código de negocio de VapeZone a ConFin.
+## Pruebas ejecutadas
 
-## Pruebas automáticas
+1. JavaScript de worker, app y core: `node --check`: OK.
+2. Simulación de instalación con `fetch` sin redirecciones: nueva caché `confin-static-5.3.7`, respuesta de navegación `redirected=false`: OK.
+3. Simulación de instalación con redirección de la raíz: respuesta reconstruida `redirected=false`: OK.
+4. Verificación: el trabajador ya no solicita `/index.html`, elimina la antigua cache de ConFin y conserva una caché no relacionada: OK.
+5. Chromium 430x932 usando HTML/CSS/JS finales y almacenamiento sintético en memoria: navegación principal, formulario de ingreso, guardar ingreso, Configuración, versión 5.3.7, sin errores de JavaScript: OK.
+6. El archivo `app.js` nuevo únicamente modifica los tres identificadores de versión (5.3.6 -> 5.3.7); el CSS es idéntico y no modifica diseño.
 
-- JavaScript `node --check`: **correcto** (app, core y service worker).
-- Motor financiero aislado: **9/9**.
-- Simulación del ciclo del service worker: **6/6**.
-- UI en Chromium: **13/13** grupos funcionales y **6/6** adicionales.
-- UI adicional focalizada: **8/8** casos (rutas, barra fija, ancho, historial mensual, selector de movimientos, crear ingreso, tema y desplazamiento).
-- Anchos: 320, 375, 390, 430 y 768 píxeles. Altura 932. La barra permaneció anclada al viewport y no se detectaron desbordamientos horizontales en las rutas verificadas.
-- Con zona segura inferior simulada de 34 px, la barra quedó con altura total de 100 px y anclada al borde inferior del viewport.
+## Pruebas pendientes
 
-## Lo que falta validar físicamente
+- Cloudflare real: no fue posible realizar solicitud HTTP directa desde el entorno.
+- Safari físico PWA previamente bloqueada: requiere publicación de esta revisión y validación en el iPhone.
+- Reproducción real de un servidor con redirecciones usando WebKit instalado: no disponible en este entorno.
 
-1. En el iPhone 15 Pro Max, **abrir la PWA instalada**, preferiblemente después de que el nuevo build esté activo. Probar sin reinstalar primero.
-2. Comprobar que la franja extra ya no aparece y el indicador de inicio queda debajo de la barra respetando la zona segura.
-3. Comprobar scroll al último movimiento, tanto con pocos como con muchos registros.
-4. Abrir y cerrar teclado en ingreso/gasto, navegar entre meses, cambiar paleta, Face ID y PIN.
-5. Copiar diagnóstico: `screen.height`, `inner.height`, `safeArea.top`, `safeArea.bottom`, `statusBarStyle` y rectángulo de navegación.
-6. Si el icono instalado mantiene un contexto WebKit creado anteriormente, la corrección de metadatos podría requerir reinstalación **solo con respaldo externo verificado**.
-
-## Estado
-
-**Versión candidata**: no se ha probado físicamente en Safari instalada, no se publicó en producción y no se alteraron datos del usuario. No afirmar “corregido definitivamente” hasta que se compruebe en el dispositivo.
+**No borres Safari ni desinstales la PWA para arreglar este error sin respaldo.**
