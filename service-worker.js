@@ -1,62 +1,53 @@
-"use strict";
-const CACHE="confin-static-5.3.4";
+'use strict';
+const VERSION='5.3.5';
+const CACHE=`confin-static-${VERSION}`;
 const ASSETS=[
-  "./", "./index.html", "./styles.css?v=5.3.4", "./app.js?v=5.3.4",
-  "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png?v=5.3.4"
+  './index.html','./manifest.webmanifest',
+  './assets/5.3.5/boot.js','./assets/5.3.5/core.js','./assets/5.3.5/app.js','./assets/5.3.5/styles.css',
+  './icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png'
 ];
-
-self.addEventListener("install",event=>{
+const scoped=path=>new URL(path,self.registration.scope).href;
+self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
     const cache=await caches.open(CACHE);
-    await cache.addAll(ASSETS);
-    // Mantener la versión anterior activa hasta que el usuario decida actualizar.
+    // Any missing/mis-typed asset aborts install. No automatic skipWaiting.
+    const responses=await Promise.all(ASSETS.map(async path=>{
+      const response=await fetch(scoped(path),{cache:'reload'});
+      if(!response.ok)throw new Error(`No se pudo descargar ${path}`);
+      const type=response.headers.get('content-type')||'';
+      if(path.endsWith('.js')&&!/javascript|ecmascript/.test(type))throw new Error('El servidor devolvio un archivo incorrecto');
+      if(path.endsWith('.css')&&!type.includes('text/css'))throw new Error('Hoja de estilos incorrecta');
+      return [path,response];
+    }));
+    await Promise.all(responses.map(([path,response])=>cache.put(scoped(path),response)));
   })());
 });
-
-self.addEventListener("message",event=>{
-  if(event.data?.type==="SKIP_WAITING")self.skipWaiting();
+self.addEventListener('message',event=>{
+  if(event.data?.type==='SKIP_WAITING')event.waitUntil(self.skipWaiting());
 });
-
-self.addEventListener("activate",event=>{
+self.addEventListener('activate',event=>{
   event.waitUntil((async()=>{
-    const keys=await caches.keys();
-    await Promise.all(keys.filter(key=>key!==CACHE&&(key.startsWith("confin-")||key.startsWith("confin-static-"))).map(key=>caches.delete(key)));
+    // Keep the immediately previous static cache for already-open pages.
+    const keys=await caches.keys(),prior=keys.filter(k=>k.startsWith('confin-static-')&&k!==CACHE);
+    await Promise.all(prior.slice(0,-1).map(k=>caches.delete(k)));
     await self.clients.claim();
   })());
 });
-
-self.addEventListener("fetch",event=>{
-  const request=event.request;
-  if(request.method!=="GET")return;
-  const url=new URL(request.url);
-  if(url.origin!==self.location.origin)return;
-  if(url.pathname.endsWith("/version.json")){
-    // Nunca anunciar una versión almacenada en caché.
-    event.respondWith(fetch(request,{cache:"no-store"}));
-    return;
-  }
-  if(request.mode==="navigate"){
+self.addEventListener('fetch',event=>{
+  const req=event.request,url=new URL(req.url),scope=new URL(self.registration.scope);
+  if(req.method!=='GET'||url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
+  if(url.pathname===new URL('version.json',scope).pathname){event.respondWith(fetch(req,{cache:'no-store'}));return}
+  if(req.mode==='navigate'){
+    // Cached shell remains coherent with its versioned assets until activation is approved.
     event.respondWith((async()=>{
-      try{
-        const response=await fetch(request);
-        if(response.ok){const cache=await caches.open(CACHE);await cache.put("./index.html",response.clone())}
-        return response;
-      }catch{
-        return await caches.match("./index.html")||new Response("ConFin no está disponible sin conexión. Intenta de nuevo.",{status:503,headers:{"Content-Type":"text/plain; charset=utf-8"}});
-      }
-    })());
-    return;
+      const cache=await caches.open(CACHE),shell=await cache.match(scoped('./index.html'));
+      if(shell)return shell;
+      return fetch(req);
+    })());return;
   }
-  // Los archivos JS y CSS nunca reciben index.html como fallback (evita pantallas negras).
   event.respondWith((async()=>{
-    const cached=await caches.match(request);
-    if(cached)return cached;
-    try{
-      const response=await fetch(request);
-      if(response.ok&&["script","style","image","manifest"].includes(request.destination)){
-        const cache=await caches.open(CACHE);await cache.put(request,response.clone());
-      }
-      return response;
-    }catch{return Response.error()}
+    const cached=await caches.match(req);if(cached)return cached;
+    // A script/style request must never receive an HTML offline fallback.
+    return fetch(req);
   })());
 });

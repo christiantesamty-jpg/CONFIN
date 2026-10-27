@@ -10,7 +10,6 @@
   ],
   "background_color": "#080b12",
   "theme_color": "#080b12",
-  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -24,5 +23,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "id": "./"
 }

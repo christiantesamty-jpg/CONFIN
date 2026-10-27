@@ -1,11 +1,12 @@
 {
-  "version": "5.3.4",
-  "message": "Auditoría de estabilidad, seguridad de datos y diseño para iPhone.",
+  "version": "5.3.5",
+  "release": "Candidata RC1",
+  "build": "2026.10.27.meses-rc1",
+  "message": "Selector mensual reparado y estructura movil unificada. Version candidata: validar en iPhone antes de produccion.",
   "changes": [
-    "Respaldos y restauración con validación y vista previa",
-    "Presupuestos y saldos corregidos",
-    "Historial mensual y búsqueda de movimientos",
-    "Diseño adaptable, sin empalmes, y bloqueo con PIN de recuperación",
-    "Caché segura y actualización coordinada"
+    "Corregido el clic global que reconstruia selectores y desplegables",
+    "Navegacion libre por mes y anio, incluidos meses sin movimientos",
+    "Estructura movil, areas seguras y formularios consolidados",
+    "Calculos en centavos, validaciones y copias de datos protegidas"
   ]
 }

@@ -12,16 +12,16 @@
   <meta name="color-scheme" content="dark light">
   <title>ConFin</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=5.3.4">
-  <link rel="stylesheet" href="styles.css?v=5.3.4">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=5.3.5">
+  <link rel="stylesheet" href="assets/5.3.5/styles.css">
 </head>
 <body class="security-pending">
+  <div id="bootStatus" class="boot-status" role="status"><strong>Preparando ConFin</strong><p>Si no abre, reintenta con conexión. No borres los datos del navegador.</p><button class="secondary-btn" id="bootReload" type="button">Reintentar sin borrar datos</button></div>
+  <noscript>ConFin requiere JavaScript. No se han borrado tus datos.</noscript>
   <div id="app" class="app-shell">
+    <div id="screenHeader"></div>
+    <div id="updateNotice" aria-live="polite"></div>
     <main id="view" class="view" aria-label="Contenido principal"></main>
-
-    <button id="fab" class="fab" type="button" aria-label="Nuevo movimiento">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-    </button>
 
     <nav class="bottom-nav" aria-label="Navegación principal">
       <button class="nav-item active" data-route="home" type="button">
@@ -42,7 +42,7 @@
     </nav>
   </div>
 
-  <div id="lockScreen" class="lock-screen" aria-hidden="true">
+  <div id="lockScreen" class="lock-screen" role="dialog" aria-modal="true" aria-label="Desbloquear ConFin" aria-hidden="true">
     <div class="lock-card">
       <div class="lock-mark" aria-hidden="true">CF</div>
       <p class="eyebrow">ConFin protegido</p>
@@ -53,11 +53,14 @@
     </div>
   </div>
 
+  <div class="safe-probe" aria-hidden="true"></div>
   <div id="modalRoot"></div>
   <input id="importFile" type="file" accept="application/json,.json" hidden>
   <input id="importCategoriesFile" type="file" accept="application/json,.json" hidden>
   <div id="toast" class="toast" role="status"></div>
 
-  <script src="app.js?v=5.3.4" defer></script>
+  <script src="assets/5.3.5/boot.js" defer></script>
+  <script src="assets/5.3.5/core.js" defer></script>
+  <script src="assets/5.3.5/app.js" defer></script>
 </body>
 </html>
