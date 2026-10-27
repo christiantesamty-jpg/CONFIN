@@ -1,51 +1,57 @@
-# ConFin 5.3.5 - Candidata RC1
+# ConFin 5.3.6 RC1 — Corrección de pantalla iPhone
 
-Preparada el 27 de octubre de 2026 sobre ConFin 5.3.4. Aplicacion estatica completa, sin proceso de compilacion ni servicios nuevos de pago. Los JS y CSS sin minificar son tambien el codigo fuente. El icono CF original se conserva.
+**Base**: ConFin 5.3.5 RC1 (`ConFin_5.3.5_RC1_Meses_y_Movil(1).zip`).
+**Referencia de diseño móvil**: código real de **VapeZone Business 2.18.4**. Se adaptaron sus decisiones de ventana, no se copió su lógica comercial.
 
-## Antes de publicar
+## Qué se cambió (únicamente interfaz y diagnóstico)
 
-Esta entrega es una candidata para probar, no una certificacion de Safari instalado. NO se ha publicado en confin.pages.dev. Primero exporta un respaldo desde cada iPhone por separado. No borres Safari, no desinstales la app y no subas los respaldos privados al repositorio.
+**Diferencia observada en el iPhone 15 Pro Max**:
+- Imagen de pantalla: 1290×2796 píxeles físicos / `devicePixelRatio=3` -> **430×932 píxeles CSS**.
+- ConFin 5.3.5 informaba `window.innerHeight=873` y `safe-area-inset-top=59px`.
+- 932−873 = **59px**, exactamente la dimensión de la zona superior. Esa coincidencia es compatible con la regresión de viewport de PWA instalada conocida en WebKit; no significa que un margen CSS de 59px la corrija.
 
-## Una sola ruta recomendada: probar en una rama
+**VapeZone Business 2.18.4**, a diferencia de ConFin 5.3.5, utiliza:
+- `<meta name="apple-mobile-web-app-status-bar-style" content="default">` (en ConFin era `black-translucent`).
+- Contenido en flujo normal del documento (`body` con margen cero y `.workspace {min-height:100vh}`), con barra de navegación móvil fija al borde.
 
-1. En GitHub, dentro de CONFIN, crea una rama desde main llamada `confin-535-prueba`. Asegurate de seguir en esa rama, no en main.
-2. Descomprime el ZIP de la aplicacion. Sube TODO su contenido a la raiz de esa rama: index.html, assets/, icons/, manifest.webmanifest, service-worker.js, version.json y _headers. Incluye los documentos de esta entrega. No subas el ZIP ni una carpeta contenedora.
-3. Haz Commit changes en esa rama. En Cloudflare Pages, abre el despliegue Preview de la rama. Si las vistas previas estan deshabilitadas, habilitalas en la configuracion de despliegues de ramas; no cambies la rama de produccion.
-4. Conserva Framework = None, Build command = vacio o `exit 0`, Build output directory = `.`. NO uses `npx wrangler deploy` ni crees otro Worker.
-5. Prueba con datos ficticios primero. El enlace de vista previa tiene almacenamiento independiente del dominio principal; que aparezca vacio no significa que se hayan borrado tus datos. No lo conviertas en tu instalacion definitiva ni uses ahi tus credenciales Face ID de produccion.
-6. Comprueba Historial mensual, Movimientos, registro/edicion, categorias, temas, metas, presupuestos y teclado en el iPhone. En Configuracion debe decir 5.3.5, Candidata RC1.
-7. Solo despues de validar y autorizar, integra esa rama en main. Cloudflare publicara en el mismo dominio de siempre. No cambies dominio ni elimines datos.
+**ConFin 5.3.6** ahora también:
+1. Usa `status-bar-style=default`, para que iOS gestione por separado la zona de la barra de estado.
+2. Elimina el contenedor general `position:fixed;height:100dvh` y los bloqueos de scroll del `html/body`.
+3. Usa desplazamiento natural del documento y barra inferior `position:fixed;bottom:0`.
+4. Reserva una sola vez la zona segura inferior en la barra, y espacio equivalente al final del contenido para no tapar movimientos.
+5. Cambia la memoria de scroll de cada pantalla al scroll del documento.
+6. Añade `screen.height`, diferencia frente al viewport y estilo de barra al diagnóstico.
 
-La carpeta assets/5.3.5 debe subirse con su ruta intacta. No copies solo app.js. Los antiguos archivos app.js y styles.css de la raiz NO son referenciados por este index.html; se pueden retirar de la rama como limpieza despues de comprobar que no hay otros enlaces. No elimines a ciegas assets/ de versiones previas mientras puedan existir ventanas antiguas abiertas. No publiques .git, .wrangler, node_modules, pruebas ni datos personales.
+No se modificaron funciones de movimientos, cuentas, tarjetas, categorías, presupuestos, metas, respaldo ni Face ID. Se conservó `confin-v4-data` y el esquema actual.
 
-## Como funciona esta entrega
+## Publicación en GitHub + Cloudflare Pages
 
-- Month controls: anterior/siguiente, mes/anio, mes actual y todos los meses en Movimientos. Los meses vacios son consultables.
-- Un solo CSS y estructura movil: encabezado, aviso de version, contenido desplazable y navegacion. El + se mantiene en el encabezado y no cubre tarjetas.
-- Cantidades en centavos para los calculos; transferencias no suman como ingresos ni gastos.
-- Presupuesto mensual o recurrente. Uno especifico sustituye al recurrente de esa categoria para ese mes, no se suman dos veces.
-- Copias locales y validacion de datos, sin nube. Cada telefono conserva su propia informacion.
-- Face ID sigue siendo una barrera de privacidad local, NO un almacenamiento cifrado. Prueba su alta, cancelacion y PIN en el dispositivo; no se ha verificado fisicamente aqui.
-- Se conserva `confin-v4-data`; el esquema interno pasa a 9 al guardar por primera vez. Se conserva una copia del original antes de esa migracion.
+1. En ConFin actual, exporta un respaldo a Archivos desde cada iPhone (el de cada persona por separado).
+2. Descomprime **todo** el ZIP. Contiene `index.html`, `service-worker.js`, `manifest.webmanifest`, `version.json`, `_headers`, las carpetas `assets/` e `icons/`.
+3. Sube los archivos y carpetas a la **raíz** del repositorio `CONFIN`, sustituyendo los archivos con el mismo nombre. No subas la carpeta contenedora ni el ZIP como archivo.
+4. Asegúrate de subir `assets/5.3.6/` COMPLETA. Se incluye también `assets/5.3.5/` sin modificar para mantener compatibilidad con ventanas de la versión anterior.
+5. Confirma el commit; Cloudflare Pages publicará la actualización automáticamente.
+6. En iPhone, abre ConFin instalada. En Configuración consulta la versión o busca la actualización. Debe indicar `5.3.6 · Ajuste móvil RC1`.
+7. Ve a **Inicio, Movimientos, Presupuestos, Metas, Cuentas y Configuración**. Desplaza cada pantalla hasta el final. Abre el formulario de ingreso/gasto y el teclado y vuelve a cerrarlo.
+8. En Configuración → Diagnóstico de pantalla → Ver medidas, verifica `statusBarStyle: "default"` y envía el informe si todavía se observa una franja inferior.
 
-## Actualizacion
+### Si sigue apareciendo la franja
 
-En nuevas versiones usa una carpeta assets con un numero nuevo y actualiza version.json, el numero del programa y el Service Worker. No cambies archivos dentro de assets/5.3.5 despues de publicarlos: son inmutables para la cache. El worker mantiene su URL estable y se activa con confirmacion. El aviso se revisa al abrir o volver a la app con conexion, no con la app completamente cerrada.
+La barra de estado de una PWA instalada puede depender del estado de instalación del icono en iOS, no solamente del código descargado. Antes de desinstalar o borrar algo **exporta y comprueba un respaldo externo**. La actualización puede modificar el documento y CSS, pero no puede obligar a WebKit a renovar la geometría del icono de pantalla de inicio si iOS la conservó. No se garantiza una solución definitiva sin pruebas físicas de la nueva versión.
 
-## Datos y recuperacion
+### Qué NO hacer
 
-Las copias internas no sustituyen al archivo guardado fuera del navegador. Exporta con frecuencia, comprueba que realmente se guardo en Archivos y conserva el respaldo de cada persona por separado. Importar un respaldo completo reemplaza los datos despues de una vista previa; importar categorias no reemplaza los movimientos.
+- No borres Safari ni la PWA para limpiar caché sin copia verificada.
+- No cambies `confin.pages.dev` por un dominio nuevo solo para arreglar la pantalla: los datos son locales al dominio.
+- No mezcles JS/CSS de `assets/5.3.5` con el `index.html` 5.3.6.
 
-Si aparece Datos en recuperacion, no captures mas operaciones. Exporta el original y revisa/restaura una copia explicitamente. No borres el almacenamiento para resolver cache.
+## Pruebas ejecutadas
 
-Antes de habilitar el bloqueo, configura y conserva el PIN de recuperacion. Si una instalacion antigua tiene Face ID activo pero ningun PIN, necesitaras desbloquear con esa credencial para configurar uno; no se incluye una confirmacion que permita saltar el bloqueo. Si ya no puedes desbloquear, conserva la instalacion y un respaldo: no borres datos intentando resolverlo.
+- Sintaxis de los 3 archivos JavaScript relacionados.
+- Navegación, ajuste horizontal y barra inferior en Chromium Linux a 320/375/390/430/768 px.
+- 13 grupos de pruebas funcionales previos: **13/13 aprobados**.
+- 6 grupos adicionales de regresión: **6/6 aprobados**.
+- 8 pruebas rápidas de layout, meses, botones, tema y scroll de documento: **8/8 aprobadas**.
+- 9 pruebas de motor financiero y 6 de Service Worker con simulación: **9/9 y 6/6 aprobadas**.
 
-## Reversion sin perder operaciones nuevas
-
-Guarda el ZIP original y un respaldo anterior a actualizar. Si aun no hiciste cambios en la candidata, puedes volver al codigo original y a tu respaldo anterior en un entorno de prueba. Si YA registraste operaciones nuevas, exporta el estado actual antes de cualquier reversion. No restaures la copia anterior encima: perderias esas operaciones. Un codigo 5.3.4 puede ignorar campos de esquema 9, como el periodo de presupuesto; una reversion con nuevos datos requiere una version compatible o conversion revisada. No se promete un downgrade automatico.
-
-## Prueba final en iPhone
-
-Verifica la version de iOS real en Ajustes. Comprueba PWA instalada, vertical/horizontal, abrir/cerrar teclado, fondo y barra en cinco pantallas con listas cortas/largas, Face ID/PIN, guardado/reapertura y apertura sin Internet despues de preparar la cache. Si hay un hueco, copia Configuracion > Diagnostico de pantalla > Ver medidas. Incluye una captura y la version exacta de iOS; el diagnostico no contiene importes ni movimientos.
-
-Consulta COMPROBACIONES.md para conocer que pruebas se ejecutaron y cuales estan pendientes.
+**Pendientes**: validar el comportamiento visual real en Safari instalada en iPhone y la actualización real por Cloudflare Pages (navegación local HTTP bloqueada en el entorno de pruebas; el navegador se ejecutó con recursos reales inyectados en `about:blank`). Los tests no son una certificación de funcionamiento en iPhone.

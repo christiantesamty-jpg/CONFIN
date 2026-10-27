@@ -1,12 +1,13 @@
 {
-  "version": "5.3.5",
-  "release": "Candidata RC1",
-  "build": "2026.10.27.meses-rc1",
-  "message": "Selector mensual reparado y estructura movil unificada. Version candidata: validar en iPhone antes de produccion.",
+  "version": "5.3.6",
+  "release": "Ajuste móvil RC1",
+  "build": "2026.10.27.mobile-vapezone-rc1",
+  "message": "Ajuste de ventana instalada en iPhone: barra de estado normal y desplazamiento del documento (referencia VapeZone Business). Probar en PWA instalada antes de publicacion final.",
   "changes": [
-    "Corregido el clic global que reconstruia selectores y desplegables",
-    "Navegacion libre por mes y anio, incluidos meses sin movimientos",
-    "Estructura movil, areas seguras y formularios consolidados",
-    "Calculos en centavos, validaciones y copias de datos protegidas"
+    "Barra de estado iOS en modo default como VapeZone Business; elimina black-translucent",
+    "El contenedor principal ya no es fixed ni usa altura 100dvh",
+    "La barra inferior es fija al borde del viewport; el documento desplaza el contenido",
+    "El diagnostico incorpora altura fisica y diferencia respecto al viewport",
+    "Sin modificaciones a movimientos, presupuestos, cuentas, categorías o almacenamiento"
   ]
 }

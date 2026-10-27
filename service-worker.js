@@ -1,9 +1,9 @@
 'use strict';
-const VERSION='5.3.5';
+const VERSION='5.3.6';
 const CACHE=`confin-static-${VERSION}`;
 const ASSETS=[
   './index.html','./manifest.webmanifest',
-  './assets/5.3.5/boot.js','./assets/5.3.5/core.js','./assets/5.3.5/app.js','./assets/5.3.5/styles.css',
+  './assets/5.3.6/boot.js','./assets/5.3.6/core.js','./assets/5.3.6/app.js','./assets/5.3.6/styles.css',
   './icons/apple-touch-icon.png','./icons/icon-192.png','./icons/icon-512.png'
 ];
 const scoped=path=>new URL(path,self.registration.scope).href;
