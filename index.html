@@ -2,7 +2,7 @@
 <html lang="es-MX">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080b12">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -17,7 +17,7 @@
 </head>
 <body class="security-pending">
   <div id="app" class="app-shell">
-    <main id="view" class="view" aria-live="polite"></main>
+    <main id="view" class="view" aria-label="Contenido principal"></main>
 
     <button id="fab" class="fab" type="button" aria-label="Nuevo movimiento">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
@@ -49,12 +49,13 @@
       <h1>Desbloquear con Face ID</h1>
       <p id="lockMessage">Confirma tu identidad para ver tus finanzas.</p>
       <button id="unlockButton" class="primary-btn lock-button" type="button">Usar Face ID</button>
-      <button id="disableLockButton" class="lock-help" type="button">Problemas para entrar</button>
+      <button id="disableLockButton" class="lock-help" type="button">Usar PIN de recuperación</button>
     </div>
   </div>
 
   <div id="modalRoot"></div>
-  <input id="importFile" type="file" accept="application/json" hidden>
+  <input id="importFile" type="file" accept="application/json,.json" hidden>
+  <input id="importCategoriesFile" type="file" accept="application/json,.json" hidden>
   <div id="toast" class="toast" role="status"></div>
 
   <script src="app.js?v=5.3.4" defer></script>

@@ -1,10 +1,11 @@
 {
   "version": "5.3.4",
-  "build": "2026.09.01.1",
-  "message": "Historial mensual disponible al final de Inicio.",
+  "message": "Auditoría de estabilidad, seguridad de datos y diseño para iPhone.",
   "changes": [
-    "Consulta ingresos, gastos y porcentaje de ahorro de meses anteriores.",
-    "Fechas locales y tarjetas de movimientos corregidas.",
-    "Categorías personalizadas de ingresos y gastos preservadas."
+    "Respaldos y restauración con validación y vista previa",
+    "Presupuestos y saldos corregidos",
+    "Historial mensual y búsqueda de movimientos",
+    "Diseño adaptable, sin empalmes, y bloqueo con PIN de recuperación",
+    "Caché segura y actualización coordinada"
   ]
 }
