@@ -1,16 +1,16 @@
 {
-  "version": "5.3.8",
-  "release": "Personalización y patrimonio RC1",
-  "build": "2026.10.27.paletas-patrimonio-rc1",
-  "message": "Nuevas paletas, configuración compacta, inversiones y dinero por cobrar; conserva la corrección de Safari de 5.3.7.",
+  "version": "5.3.9",
+  "release": "Registro rapido y categorias RC1",
+  "build": "2026.10.28.quick-categories-receipts-rc1",
+  "message": "Categorias personalizables y ordenables; gastos mas rapidos, selector de presupuesto corregido y lectura OCR local opcional.",
   "changes": [
-    "Cinco paletas adicionales y preview de diez temas",
-    "Tipografía y componentes móviles consistentes",
-    "Categorías de ingresos y gastos en pantallas independientes",
-    "Inversiones: capital, aportaciones, retiros, rendimientos cobrados y valoración manual",
-    "Cuentas por cobrar con abonos parciales y ocultamiento de resúmenes sin pendientes",
-    "Resumen patrimonial sin doble conteo de transferencias",
-    "Respaldo compatible de datos, inversiones y cobros"
+    "28 categorias de gastos y 9 de ingresos como catalogo para instalaciones nuevas",
+    "Migracion no destructiva que conserva identificadores, nombres y emojis existentes",
+    "Orden personalizado, favoritos, busqueda y acciones de categorias en horizontal",
+    "Presupuesto mensual con selector de mes y anio adaptado al iPhone",
+    "Nota opcional como primer campo, cuenta recordada y borradores recuperables",
+    "Fotografiar recibo y proponer total por OCR opcional en el dispositivo, con confirmacion manual",
+    "Correcciones visuales sin cambiar la estructura de viewport ni el Service Worker Safari-safe"
   ],
-  "notes": "Versión candidata; validar en PWA instalada antes de publicar en producción."
+  "notes": "Version candidata RC1. El OCR requiere descargar la libreria gratuita la primera vez y no guarda fotos. Validar en Safari PWA antes de publicar."
 }

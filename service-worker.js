@@ -1,21 +1,22 @@
 "use strict";
 /**
- * ConFin 5.3.8 - Safari-safe incremental update.
+ * ConFin 5.3.9 - Safari-safe incremental update.
  * Important: Cloudflare Pages may redirect /index.html to /.
  * Safari rejects navigation Response objects with redirected=true when
  * delivered by a Service Worker, even if the final status is 200.
  * Never cache a redirected response and never send one to respondWith().
  * This file only changes application caches. It never touches localStorage.
  */
-const VERSION='5.3.8';
+const VERSION='5.3.9';
 const CACHE=`confin-static-${VERSION}`;
 const ROOT=new URL('./',self.registration.scope).href;
 const ASSETS=[
   './manifest.webmanifest',
-  './assets/5.3.8/boot.js',
-  './assets/5.3.8/core.js',
-  './assets/5.3.8/app.js',
-  './assets/5.3.8/styles.css',
+  './assets/5.3.9/boot.js',
+  './assets/5.3.9/core.js',
+  './assets/5.3.9/app.js',
+  './assets/5.3.9/styles.css',
+  './assets/5.3.9/receipt-ocr.js',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',
   './icons/icon-512.png'

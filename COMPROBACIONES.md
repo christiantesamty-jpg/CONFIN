@@ -1,31 +1,35 @@
-# Verificación de ConFin 5.3.8 · RC1
+# Pruebas y limites - ConFin 5.3.9 RC1
 
-## Base y alcance
+## Base de codigo
 
-- Código base: `ConFin_5.3.7_CORRECCION_SAFARI_SERVICE_WORKER.zip` (proporcionado en la conversación).
-- Esta actualización reemplaza los recursos de app por una sola carpeta versionada `assets/5.3.8/`.
-- El Service Worker **conserva** el manejo de URL canónica `/` y la reconstrucción de respuestas sin metadatos de redirección que corrigió Safari 5.3.7. Solo se actualizaron identificador y rutas de recursos.
-- No hay nuevas dependencias de JavaScript, APIs pagadas ni servicios en la nube.
+Partiendo de `ConFin_5.3.8_PERSONALIZACION_INVERSIONES_Y_COBROS_RC1.zip` se actualizaron recursos versionados a `assets/5.3.9/`; se mantuvo el Service Worker que reconstruye respuestas para evitar redirecciones en Safari.
 
-## Ejecuciones reales
+## Pruebas realmente ejecutadas
 
-- `node --check` sobre `app.js`, `core.js` y `service-worker.js`: correcto.
-- Playwright + Chromium con interacción real en los controles HTML ejecutados desde contenido local insertado, con `localStorage` simulado: **12 grupos aprobados, 0 fallidos**.
-- Verificados: todas las 11 paletas y persistencia de selección; navegación a categorías en Configuración; alta de categorías de ambos tipos; edición de nombre, emoji compuesto y color; migración de schema 9 a schema 10 y copia previa.
-- Verificados: inversión con aportación de $20,000, valor actualizado a $21,000, retiro de $3,000, rendimiento cobrado de $500; cálculo de saldo bancario, valor de inversión, resultado y patrimonio, y rendimiento visible de lectura en Movimientos.
-- Verificados: préstamo inicial de $10,000, abonos de $3,000 y $7,000, interés cobrado de $250, estado liquidado, ocultamiento de resumen pendiente y acceso al historial.
-- Verificados: crear y editar movimiento previo, navegar por Presupuestos y Metas, respaldo con los campos nuevos, anular sin duplicados un préstamo sin abonos y una inversión con un único aporte, saldo insuficiente rechazado y recarga de datos.
-- Revisados visualmente anchos **320, 360, 390, 430 y 768 px** en Configuración, Categorías, Cuentas e Inversiones; sin desbordamiento horizontal en esos casos. Se inspeccionó además una inversión de nombre largo con $123,456.78 en pantalla de 320 px.
-- Simulación del Service Worker con respuesta canónica normal y con redirección: **2 escenarios aprobados**, en ambos se devuelve una respuesta de navegación con `redirected=false` y se eliminan exclusivamente cachés estáticas anteriores de ConFin.
+- **21/21 aserciones**: arranque, categorias exactas 28+9 e IDs, nota primero, busqueda, registro de gastos/ingresos, totales, orden, presupuesto mensual, parser OCR, sugerencia de monto con OCR simulado y desbordamientos.
+- **17/17 verificaciones de migracion y pantalla**: datos 5.3.8 con movimientos y categorias previas, conservacion de IDs, nombres, archivos, saldos, presupuesto, meta, copia previa, no duplicacion en recarga y ausencia de desbordamiento horizontal en 320, 360, 375, 390, 430 y 768 px.
+- **25/25 grupos de interacciones**: abrir formularios, cambiar ingreso/gasto, gestionar categorias, orden persistente, botones horizontales, selector de mes y ano, sugerencia OCR simulada, guardar y ausencia de errores JavaScript observados.
+- **Service Worker**: simulacion de redireccion de raiz; no devuelve respuesta de navegacion con metadatos `redirected=true`.
+- **Sintaxis y estructura**: `node --check` de scripts, JSON validos y ZIP integro (validar de nuevo al generar).
 
-## No comprobado
+Las pruebas de navegador se hicieron en **Chromium con DOM/CSS/JS reales y almacenamiento simulado**. No se ejecuto una instalacion real de PWA en iPhone ni se probo su actualizacion real desde Cloudflare.
 
-- Safari iOS / modo standalone en iPhone 15 Pro Max: **requiere validación física** de desplazamiento, teclado y zona segura.
-- Prompts de Face ID y PIN en hardware real: **sin prueba física**.
-- Prueba de despliegue HTTPS real de Cloudflare Pages e instalación sobre una sesión con datos personales: **no ejecutada**.
-- Cuota real de almacenamiento, actualización de caches en PWA instalada y flujos offline: **sin prueba física o E2E real**.
-- No se ha validado contablemente TIR o rentabilidad anualizada; el módulo usa rendimiento total simple, con valor de inversión introducido manualmente.
+## Lo que NO se ha probado y NO debe darse por aprobado
 
-## Prueba manual recomendada en iPhone
+- Safari iOS 18.7 instalado en iPhone 15 Pro Max: pantalla completa, desplazamiento, teclado, fotografias, control tactil.
+- Descarga en vivo de Tesseract.js y OCR de un recibo fotografiado, ni exactitud estadistica de totales. Solo heuristicas y comportamiento con OCR simulado.
+- Face ID o PIN en hardware.
+- Cambio de Service Worker con cache instalada desde 5.3.8 y datos personales reales.
+- Cuotas reales y falta de espacio en Safari.
+- Retencion permanente de fotografias: NO implementada por seguridad de almacenamiento.
 
-Instala **primero una vista previa con datos ficticios**. Comprueba que la barra inferior no deje espacio sobrante, que toda la pantalla pueda desplazarse, y que los formularios sean utilizables con teclado abierto. Comprueba cambiar tema y regresar a Configuración; crear gastos, ingresos y categorías; agregar inversión, modificar valor y recibir rendimiento; registrar préstamo y dos abonos; exportar/importar un respaldo ficticio; cerrar y volver a abrir la PWA; verificar que los datos persistan. Solo entonces considerar publicar en producción.
+## Validacion manual recomendada
+
+1. Crear vista previa por rama, con datos ficticios.
+2. Ingresar gasto con nota, monto y categoria; guardar y comprobar cuenta y totales. Repetir con ingreso.
+3. En Configuracion ordenar categorias, recargar, editar nombre/emojis, archivar y verificar persistencia.
+4. En Presupuestos seleccionar Mes especifico, mes/ano, guardar, editar y confirmar que ningun campo se salga de pantalla.
+5. En Gastos probar Tomar foto y Elegir foto. Verificar que el monto sugerido requiere pulsar Usar este monto, y despues Guardar. Si falla, usar captura manual.
+6. Revisar inversiones, cuentas por cobrar, metas, historial mensual, apariencias, respaldo y barra inferior.
+7. Probar abrir/cerrar app instalada, sin pantalla en negro ni `Response served by service worker has redirections`.
+8. Solo despues actualizar main, guardando respaldo externo de cada usuario.
